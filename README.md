@@ -2,7 +2,6 @@
 RESTful server for bwsw/cs-pulse-sensor datafeed processing
 
 # Data json format:
-cpuTime example
 ```
 results: [
   {
