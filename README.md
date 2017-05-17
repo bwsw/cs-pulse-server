@@ -28,5 +28,8 @@ results: [
   results: [...]
 }
 ```
-### Class diagramm:
+### Class diagram:
 ![alt text](https://github.com/bwsw/cs-pulse-server/blob/master/PulseSchema.png?raw=true)
+
+### Component diagram:
+![alt text](https://github.com/bwsw/cs-pulse-server/blob/master/pulse_component.png?raw=true)
