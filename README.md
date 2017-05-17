@@ -29,3 +29,4 @@ results: [
 }
 ```
 ### Class diagramm:
+![alt text](https://github.com/bwsw/cs-pulse-server/blob/master/PulseSchema.png?raw=true)
