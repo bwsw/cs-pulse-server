@@ -1,7 +1,7 @@
 # cs-pulse-server
 RESTful server for bwsw/cs-pulse-sensor datafeed processing
 
-# Data json format:
+### Data json format:
 ```
 results: [
   {
@@ -13,7 +13,7 @@ results: [
 ]
 ```
 
-# Metadata json format:
+### Metadata json format:
 ```
 {
   measurement: <measurement>,
@@ -28,3 +28,4 @@ results: [
   results: [...]
 }
 ```
+### Class diagramm:
