@@ -5,22 +5,22 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 
 ##### Request types
 
-1. CPU time, query param /cputime/<uuid>/<range>/<aggregation>/<shift>
-* <uuid> - host uuid
-* <range> - Data output period - 15m, 30m, 1h, 2h, 4h, 12h, 1d, 1w, 1m
-* <shift> - 0+ which means N-fold shift in current  range
-* <aggregation> - 1m, 5m, 15m, 1h (aggregation must be less then range), example: range=15m, aggregation=5m, in result we have 3 values for needed data.
+1. CPU time, query param /cputime/uuid/range/aggregation/shift
+* uuid - host uuid
+* range - Data output period - 15m, 30m, 1h, 2h, 4h, 12h, 1d, 1w, 1m
+* shift - 0+ which means N-fold shift in current  range
+* aggregation - 1m, 5m, 15m, 1h (aggregation must be less then range), example: range=15m, aggregation=5m, in result we have 3 values for needed data.
  Can have only one parameter which is gotten from a sensor
  
-2. RAM utilization /ram/<uuid>/< range>/<aggregation>/<shift>
+2. RAM utilization /ram/uuid/range/aggregation/shift
 * Can have only one parameter which is gotten from a sensor
 * Data output should have bits dimension
 
-3. Network utilization /network-interface/<uuid>/<mac>/< range>/<aggregation>/<shift>
+3. Network utilization /network-interface/uuid/mac/range/aggregation/shift
 * have addition value - mac - mac card address
 * can have many parameters which are gotten from a sensor
 
-4. Disk utilization /disk/<uuid>/<disk-uuid>/< range>/<aggregation>/<shift>
+4. Disk utilization /disk/uuid/disk-uuid/range/aggregation/shift
 * have addition value disk-uuid
 * can have many parameters which are gotten from a sensor
 
