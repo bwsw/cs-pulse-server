@@ -177,7 +177,7 @@ http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/08:ED:B9:
 ##### Network response: 
 ```
 {
-    measurement: network,
+    measurement: network-interface,
     uuid: 550e8400-e29b-41d4-a716-446655440000,
     mac: 08:ED:B9:49:B2:E5,
     range: 1h,
