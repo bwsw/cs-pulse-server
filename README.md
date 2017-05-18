@@ -87,7 +87,7 @@ http://hostname/cputime/550e8400-e29b-41d4-a716-446655440000/1d/1h/1w
     uuid: 550e8400-e29b-41d4-a716-446655440000,
     range: 1d,
     aggregation: 1h,
-    shift: 1wm
+    shift: 1w,
     results: 
     [
         {
