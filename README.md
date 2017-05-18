@@ -138,7 +138,7 @@ http://hostname/ram/550e8400-e29b-41d4-a716-446655440000/15m/1m/1d
 
 ##### Disk request:
 ```
-http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/70dc25e9-82c6-4a8c-8d7d-3e304cced576/1h/15m/0s
+http://hostname/disk/550e8400-e29b-41d4-a716-446655440000/70dc25e9-82c6-4a8c-8d7d-3e304cced576/1h/15m/0s
 ```
 ##### Disk response:
 ```
