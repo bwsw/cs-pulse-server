@@ -145,7 +145,7 @@ http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/70dc25e9-
 {
     measurement: disk,
     uuid: 550e8400-e29b-41d4-a716-446655440000,
-    mac: 08-ED-B9-49-B2-E5,
+    diskUuid: 70dc25e9-82c6-4a8c-8d7d-3e304cced576,
     range: 1h,
     aggregation: 15m,
     shift: 0s,
@@ -177,7 +177,7 @@ http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/08:ED:B9:
 ##### Network response: 
 ```
 {
-    measurement: disk,
+    measurement: network,
     uuid: 550e8400-e29b-41d4-a716-446655440000,
     mac: 08:ED:B9:49:B2:E5,
     range: 1h,
