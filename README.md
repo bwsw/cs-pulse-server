@@ -1,7 +1,7 @@
 # cs-pulse-server
 RESTful server for bwsw/cs-pulse-sensor datafeed processing
 
-### Server specification¶
+### Server specification
 
 ##### Request types
 
