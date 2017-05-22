@@ -26,14 +26,14 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 
 ##### Features:
 
-- [ ] &nbsp; Implement with trivial HTTP REST framework like Scalatra or Play,
+- [x] &nbsp; Implement with trivial HTTP REST framework like Scalatra or Play,
 - [ ] &nbsp; build and deploy as docker container,
 - [ ] &nbsp; attach to dockerhub
 - [ ] &nbsp; no external database required (except influxdb)
 - [ ] &nbsp; implement per-client query limit/sec parameter configurable with ENVARS with Nginx (#20 queries per second) 
 - [ ] &nbsp; implement behind nginx
-- [ ] &nbsp; valid RESTful GET methods according to above specification
-- [ ] &nbsp; JSON for responses
+- [x] &nbsp; valid RESTful GET methods according to above specification
+- [x] &nbsp; JSON for responses
 - [ ] &nbsp; Configurable nginx cache time (in seconds) for repeatable requests, default 10 seconds
 - [ ] &nbsp; Set what kind of aggregation can there be for each range.
 
