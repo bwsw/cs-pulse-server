@@ -6,6 +6,7 @@ import org.json4s.{DefaultFormats, Formats}
 import org.scalatra._
 import org.scalatra.json.JacksonJsonSupport
 import com.bwsw.pulse.views._
+import org.scalatra
 
 
 class PulseController extends ScalatraServlet with JacksonJsonSupport {
@@ -31,22 +32,22 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   }
 
   get("/cputime/:uuid/:range/:aggregation/:shift") {
-    createResourceView(cpu, cpuView)
+    createResourceView(cpu, cpuView, params)
   }
 
   get("/ram/:uuid/:range/:aggregation/:shift") {
-    createResourceView(ram, ramView)
+    createResourceView(ram, ramView, params)
   }
 
   get("/network/:uuid/:mac/:range/:aggregation/:shift") {
-    createResourceView(network, networkView)
+    createResourceView(network, networkView, params)
   }
 
   get("/disk/:uuid/:diskUuid/:range/:aggregation/:shift") {
-    createResourceView(disk, diskView)
+    createResourceView(disk, diskView, params)
   }
 
-  def createResourceView(concreteResource: Resource, concreteView: View): CaseClassView = {
+  def createResourceView(concreteResource: Resource, concreteView: View, params: scalatra.Params): CaseClassView = {
     val sourceData: QueryResult = concreteResource.getResult(params)
     val view = concreteView.prepareView(sourceData)
     view
