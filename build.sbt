@@ -12,4 +12,3 @@ libraryDependencies += "org.json4s"   %% "json4s-jackson" % "3.5.2"
 libraryDependencies += "org.eclipse.jetty" % "jetty-server" % "9.4.5.v20170502"
 libraryDependencies += "org.eclipse.jetty" % "jetty-servlet" % "9.4.5.v20170502"
 libraryDependencies += "org.eclipse.jetty" % "jetty-webapp" % "9.4.5.v20170502"
-    
