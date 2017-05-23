@@ -7,13 +7,15 @@ import org.scalatra._
 import org.scalatra.json.JacksonJsonSupport
 import com.bwsw.pulse.views._
 import org.scalatra
+import org.slf4j.{Logger, LoggerFactory}
 
 
 class PulseController extends ScalatraServlet with JacksonJsonSupport {
 
   protected implicit lazy val jsonFormats: Formats = DefaultFormats
+  protected val applicationDescription = "Pulse Server"
 
-  protected val applicationDescription = "Test App"
+  val logger: Logger =  LoggerFactory.getLogger(getClass)
 
   val cpu: Resource = new Cpu
   val cpuView: View = new CpuView
@@ -32,18 +34,22 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   }
 
   get("/cputime/:uuid/:range/:aggregation/:shift") {
+    logger.info(s"Cpu time: $params")
     createResourceView(cpu, cpuView, params)
   }
 
   get("/ram/:uuid/:range/:aggregation/:shift") {
+    logger.info(s"Ram: $params")
     createResourceView(ram, ramView, params)
   }
 
-  get("/network/:uuid/:mac/:range/:aggregation/:shift") {
+  get("/network-interface/:uuid/:mac/:range/:aggregation/:shift") {
+    logger.info(s"Network: $params")
     createResourceView(network, networkView, params)
   }
 
   get("/disk/:uuid/:diskUuid/:range/:aggregation/:shift") {
+    logger.info(s"Disk: $params")
     createResourceView(disk, diskView, params)
   }
 
