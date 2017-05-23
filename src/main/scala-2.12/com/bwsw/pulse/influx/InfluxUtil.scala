@@ -1,33 +1,27 @@
 package com.bwsw.pulse.influx
 
-import com.paulgoldbaum.influxdbclient.Parameter.Precision
-import com.paulgoldbaum.influxdbclient.{Database, InfluxDB, QueryResult}
-
-import scala.concurrent._
-import scala.concurrent.duration._
-import ExecutionContext.Implicits.global
+import org.influxdb._
+import org.influxdb.dto._
 
 
+/**
+  * InfluxUtil object work with Influx database.
+  *
+  * There are two methods declared here: createConnection, executeQuery.
+  * Before use InfluxUtil to executing query call createConnection to create new database connection.
+  */
 
 object InfluxUtil {
-  val influxConnection: InfluxDB = InfluxDB
-    .connect(host = "cs1-influx.z1.netpoint-dc.com", port = 8086, username = "puls", password = "pulsPassword")
+  var influxDB: InfluxDB = _
+  var dbName: String = _
 
-  val influxDB: Database = influxConnection.selectDatabase("puls")
-
-  def getResult() = {
-    val query = "select \"cpuTime\" from \"cpuTime\" where time > now() - 1m"
-    val data: QueryResult = Await.result(influxDB.query(query, Precision.MICROSECONDS), 5000.millis)
-    val result = data.series.head
-    println(result)
-    influxConnection.close()
-
+  def createConnection(host: String, port: String, username: String, password: String, database: String): Unit = {
+    val connUrl = "http://" + host + ":" + port
+    this.influxDB = InfluxDBFactory.connect(connUrl, username, password)
+    this.dbName = database
   }
 
   def executeQuery(query: String): QueryResult = {
-    Await.result(influxDB.query(query, Precision.MICROSECONDS), 5000.millis)
+    influxDB.query(new Query(query, dbName))
   }
 }
-
-
-

@@ -1,6 +1,6 @@
 package com.bwsw.pulse.views
 
-import com.paulgoldbaum.influxdbclient.QueryResult
+import org.influxdb.dto.QueryResult
 
 
 class CpuView extends View {
