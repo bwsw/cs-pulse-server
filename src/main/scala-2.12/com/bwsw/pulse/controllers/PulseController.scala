@@ -34,22 +34,22 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   }
 
   get("/cputime/:uuid/:range/:aggregation/:shift") {
-    logger.info(s"Cpu time: $params")
+    logger.debug(s"Cpu time: $params")
     createResourceView(cpu, cpuView, params)
   }
 
   get("/ram/:uuid/:range/:aggregation/:shift") {
-    logger.info(s"Ram: $params")
+    logger.debug(s"Ram: $params")
     createResourceView(ram, ramView, params)
   }
 
   get("/network-interface/:uuid/:mac/:range/:aggregation/:shift") {
-    logger.info(s"Network: $params")
+    logger.debug(s"Network: $params")
     createResourceView(network, networkView, params)
   }
 
   get("/disk/:uuid/:diskUuid/:range/:aggregation/:shift") {
-    logger.info(s"Disk: $params")
+    logger.debug(s"Disk: $params")
     createResourceView(disk, diskView, params)
   }
 
