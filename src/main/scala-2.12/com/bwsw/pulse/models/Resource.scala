@@ -15,7 +15,13 @@ abstract class Resource {
 
 
 class Cpu extends Resource {
-  override def prepareQuery(params: Map[String, String]): String = ???
+  override def prepareQuery(params: Map[String, String]): String = {
+    "SELECT DERIVATIVE(MEAN(\"cpuTime\")," + params("aggregation")+") / " +
+      "LAST(\"cpus\") / 60 * 100 AS \"cpu\" FROM \"cpuTime\" " +
+      "WHERE \"vmUuid\" = '" + params("uuid") + "' AND " +
+      "time > now() - " + params("range") + " - " + params("shift") + " AND " +
+      "time < now() - " + params("shift") + " GROUP BY time(" + params("aggregation") + ")"
+  }
 }
 
 class Ram extends Resource {
@@ -29,4 +35,3 @@ class Disk extends Resource {
 class Network extends Resource {
   override def prepareQuery(params: Map[String, String]): String = ???
 }
-
