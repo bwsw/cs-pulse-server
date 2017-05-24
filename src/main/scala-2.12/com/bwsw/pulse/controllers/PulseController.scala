@@ -1,7 +1,7 @@
 package com.bwsw.pulse.controllers
 
 import com.bwsw.pulse.models._
-import com.paulgoldbaum.influxdbclient.QueryResult
+import org.influxdb.dto.QueryResult
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra._
 import org.scalatra.json.JacksonJsonSupport

@@ -1,7 +1,7 @@
 package com.bwsw.pulse.models
 
 import com.bwsw.pulse.influx.InfluxUtil
-import com.paulgoldbaum.influxdbclient.QueryResult
+import org.influxdb.dto.QueryResult
 
 
 abstract class Resource {
