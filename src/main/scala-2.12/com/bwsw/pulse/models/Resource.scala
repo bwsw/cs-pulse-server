@@ -25,13 +25,40 @@ class Cpu extends Resource {
 }
 
 class Ram extends Resource {
-  override def prepareQuery(params: Map[String, String]): String = ???
+  override def prepareQuery(params: Map[String, String]): String = {
+    "SELECT MEAN(\"rss\") AS \"rss\" FROM \"rss\" " +
+      "WHERE \"vmUuid\" = '" + params("uuid") + "' AND " +
+      "time > now() - " + params("range") + " - " + params("shift") + " AND " +
+      "time < now() - " + params("shift") + " GROUP BY time(" + params("aggregation") + ")"
+  }
 }
 
 class Disk extends Resource {
-  override def prepareQuery(params: Map[String, String]): String = ???
+  override def prepareQuery(params: Map[String, String]): String = {
+    "SELECT MEAN(\"ioErrors\") AS \"ioErrors\", " +
+      "MEAN(\"readBytes\") AS \"readBytes\", " +
+      "MEAN(\"writeBytes\") AS \"writeBytes\", " +
+      "MEAN(\"readIOPS\") AS \"readIOPS\", " +
+      "MEAN(\"writeIOPS\") AS \"writeIOPS\" " +
+      "FROM \"disk\" " +
+      "WHERE \"vmUuid\" = '" + params("uuid") + "' AND " +
+      "\"image\" = '" + params("diskUuid") + "' AND " +
+      "time > now() - " + params("range") + " - " + params("shift") + " AND " +
+      "time < now() - " + params("shift") + " GROUP BY time(" + params("aggregation") + ")"
+  }
 }
 
 class Network extends Resource {
-  override def prepareQuery(params: Map[String, String]): String = ???
+  override def prepareQuery(params: Map[String, String]): String = {
+    "SELECT MEAN(\"ioErrors\") AS \"ioErrors\", " +
+      "MEAN(\"readBytes\") AS \"readBytes\", " +
+      "MEAN(\"writeBytes\") AS \"writeBytes\", " +
+      "MEAN(\"readIOPS\") AS \"readIOPS\", " +
+      "MEAN(\"writeIOPS\") AS \"writeIOPS\" " +
+      "FROM \"networkInterface\" " +
+      "WHERE \"vmUuid\" = '" + params("uuid") + "' AND " +
+      "\"mac\" = '" + params("mac") + "' AND " +
+      "time > now() - " + params("range") + " - " + params("shift") + " AND " +
+      "time < now() - " + params("shift") + " GROUP BY time(" + params("aggregation") + ")"
+  }
 }
