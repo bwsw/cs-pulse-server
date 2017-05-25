@@ -13,11 +13,6 @@ import org.mockito.Mockito
 import scala.collection.JavaConverters._
 
 class TestGetResult {
-
-  val host = "localhost"
-  val port = "8086"
-  val username = "username"
-  val password = "password"
   val database = "database"
 
   var cpuQueryResult: QueryResult = _

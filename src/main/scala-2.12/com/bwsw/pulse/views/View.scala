@@ -3,8 +3,8 @@ package com.bwsw.pulse.views
 import org.influxdb.dto.QueryResult
 
 
-trait View {
-  def prepareView(data: QueryResult): CaseClassView = ???
+trait ViewFabric {
+  def prepareView(sourceData: QueryResult, params: Map[String, String]): View
 }
 
-trait CaseClassView
+trait View

@@ -18,16 +18,16 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   val logger: Logger =  LoggerFactory.getLogger(getClass)
 
   val cpu: Resource = new Cpu
-  val cpuView: View = new CpuView
+  val cpuView: ViewFabric = new CpuViewFabric
 
   val ram: Resource = new Ram
-  val ramView: View = new RamView
+  val ramView: ViewFabric = new RamViewFabric
 
   val disk: Resource = new Disk
-  val diskView: View = new DiskView
+  val diskView: ViewFabric = new DiskViewFabric
 
   val network: Resource = new Network
-  val networkView: View = new NetworkView
+  val networkView: ViewFabric = new NetworkViewFabric
 
   before() {
     contentType = formats("json")
@@ -53,9 +53,9 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
     createResourceView(disk, diskView, params)
   }
 
-  def createResourceView(concreteResource: Resource, concreteView: View, params: scalatra.Params): CaseClassView = {
+  def createResourceView(concreteResource: Resource, concreteView: ViewFabric, params: scalatra.Params): View = {
     val sourceData: QueryResult = concreteResource.getResult(params)
-    val view = concreteView.prepareView(sourceData)
+    val view = concreteView.prepareView(sourceData, params)
     view
   }
 }
