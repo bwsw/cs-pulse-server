@@ -2,27 +2,27 @@ package views
 
 import java.util
 
-import com.bwsw.pulse.views.{CpuViewFabric, CpuViewMeta}
-import org.junit._
-import org.influxdb.dto._
+import com.bwsw.pulse.views.{RamViewFabric, RamViewMeta}
+import org.influxdb.dto.QueryResult
+import org.junit.{Assert, Before, Test}
 
 import scala.collection.JavaConverters._
 
-class TestCpuView {
 
+class TestRamView {
   val database = "database"
 
   var queryResult: QueryResult = _
   var params: Map[String, String] = _
 
-  val measurement = "cpuTime"
+  val measurement = "rss"
 
   @Before
   def initialize() = {
     params = Map(
       "uuid" -> "804d6013-e208-3f67-89f0-f60d8e8c8905",
-      "range" -> "1d",
-      "aggregation" -> "1h",
+      "range" -> "1h",
+      "aggregation" -> "15m",
       "shift" -> "1d"
     )
 
@@ -30,20 +30,20 @@ class TestCpuView {
       List (
         List (
           "1495610691540557879".asInstanceOf[AnyRef],
-          "13.4375".asInstanceOf[AnyRef]
+          "4242096".asInstanceOf[AnyRef]
         ).asJava,
         List (
           "1495610691578858087".asInstanceOf[AnyRef],
-          "13.316666".asInstanceOf[AnyRef]
+          "1225272".asInstanceOf[AnyRef]
         ).asJava,
         List (
           "1495610691578858093".asInstanceOf[AnyRef],
-          "13.316666666651145".asInstanceOf[AnyRef]
+          "4290544".asInstanceOf[AnyRef]
         ).asJava
       ).asJava
 
     val series = new QueryResult.Series
-    series.setColumns(List("time", "cpu").asJava)
+    series.setColumns(List("time", "rss").asJava)
     series.setName(measurement)
     series.setValues(values)
 
@@ -57,8 +57,8 @@ class TestCpuView {
 
   @Test
   def testPrepareView() = {
-    val viewFabric = new CpuViewFabric
-    val view: CpuViewMeta = viewFabric.prepareView(queryResult, params)
+    val viewFabric = new RamViewFabric
+    val view: RamViewMeta = viewFabric.prepareView(queryResult, params)
 
     Assert.assertEquals(view.measurement, measurement)
     Assert.assertEquals(view.uuid, params("uuid"))
@@ -66,10 +66,9 @@ class TestCpuView {
     Assert.assertEquals(view.aggregation, params("aggregation"))
     Assert.assertEquals(view.shift, params("shift"))
 
-    Assert.assertEquals(view.result.head.cpu, "13.4375")
-    Assert.assertEquals(view.result.last.cpu, "13.316666666651145")
+    Assert.assertEquals(view.result.head.rss, "4242096")
+    Assert.assertEquals(view.result.last.rss, "4290544")
 
     Assert.assertEquals(view.result.length, 3)
   }
-
 }
