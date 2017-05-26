@@ -29,7 +29,7 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 - [x] &nbsp; Implement with trivial HTTP REST framework like Scalatra or Play,
 - [ ] &nbsp; build and deploy as docker container,
 - [ ] &nbsp; attach to dockerhub
-- [ ] &nbsp; no external database required (except influxdb)
+- [x] &nbsp; no external database required (except influxdb)
 - [ ] &nbsp; implement per-client query limit/sec parameter configurable with ENVARS with Nginx (#20 queries per second) 
 - [ ] &nbsp; implement behind nginx
 - [x] &nbsp; valid RESTful GET methods according to above specification
@@ -45,7 +45,6 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 ```
 results: [
   {
-    time: <timestamp>,
     <field>: <value>,
     ...
   }, 
@@ -91,15 +90,12 @@ http://hostname/cputime/550e8400-e29b-41d4-a716-446655440000/1d/1h/1w
     results: 
     [
         {
-            time: 1495095253538261861,
             cpu: 50
         },
         {
-            time: 1495095733576515764,
             cpu: 70
         },
         {
-            time: 1495096105019488941,
             cpu: 40
         }
     ]
@@ -121,15 +117,12 @@ http://hostname/ram/550e8400-e29b-41d4-a716-446655440000/15m/1m/1d
     result: 
     [
         {
-            time: 1495096105019488941,
             rss: 3.5
         },
         {
-            time: 1495096170818385758,
             rss: 3.3
         },
         {
-            time: 1495096269086018493,
             rss: 3.6
         }
     ]
@@ -152,7 +145,6 @@ http://hostname/disk/550e8400-e29b-41d4-a716-446655440000/70dc25e9-82c6-4a8c-8d7
     result: 
     [
         {
-            time: 1495096861491604231,
             ioErrors: -1,
             readBytes: 4096,
             writeBytes: 2108076032,
@@ -160,7 +152,6 @@ http://hostname/disk/550e8400-e29b-41d4-a716-446655440000/70dc25e9-82c6-4a8c-8d7
             writeIOPS: 489850
         },
         {
-            time: 1495096861538785936,
             ioErrors: -1,
             readBytes: 144589824,
             writeBytes: 1702346752,
@@ -186,7 +177,6 @@ http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/08:ED:B9:
     result: 
     [
         {
-            time: 1495097630092157592,
             readBytes: 354920233,
             writeBytes: 233636521,
             readErrors: 0,
@@ -197,7 +187,6 @@ http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/08:ED:B9:
             writePackets: 797443
         },
         {
-            time: 1495097630092157592,
             readBytes: 17842072,
             writeBytes: 15747525,
             readErrors: 0,
