@@ -16,7 +16,7 @@ pulse_config {
     database = "database"
     database = ${?INFLUX_DATABASE}
   }
-  aggregation_allowed = [
+  aggregations_allowed = [
     {
       range = "15m"
       aggregation = ["1m", "5m"]
