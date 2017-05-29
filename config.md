@@ -1,5 +1,5 @@
 ```
-pulse {
+pulse_config {
   influx {
     host =  "host"
     host = ${?INFLUX_HOST}
