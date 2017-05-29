@@ -16,62 +16,47 @@ pulse_config {
     database = "database"
     database = ${?INFLUX_DATABASE}
   }
-  time = [
-    {
-      range = "15m"
-      spec {
+  range_permitted = {
+    aggregation_allowed = ["1m", "5m", "15m", "30m", "1h", "4h", "1d"]
+    range_spec = [
+      {
+        range = "15m"
         aggregation = ["1m", "5m"]
       }
-    }
-    {
-      range = "30m"
-      spec {
+      {
+        range = "30m"
         aggregation = ["1m", "5m", "15m"]
       }
-    }
-    {
-      range = "1h"
-      spec {
+      {
+        range = "1h"
         aggregation = ["1m", "5m", "15m"]
       }
-    }
-    {
-      range = "2h"
-      spec {
+      {
+        range = "2h"
         aggregation = ["5m", "15m", "30m"]
       }
-    }
-    {
-      range = "4h"
-      spec {
+      {
+        range = "4h"
         aggregation = ["5m", "15m", "30m", "1h"]
       }
-    }
-    {
-      range = "12h"
-      spec {
+      {
+        range = "12h"
         aggregation = ["15m", "30m", "1h"]
       }
-    }
-    {
-      range = "1d"
-      spec {
+      {
+        range = "1d"
         aggregation = ["30m", "1h"]
       }
-    }
-    {
-      range = "1w"
-      spec {
+      {
+        range = "1w"
         aggregation = ["1h", "4h"]
       }
-    }
-    {
-    range = "30d"
-    spec {
-      aggregation = ["4h", "1d"]
-    }
-    }
-  ]
-  shift = ["m", "h", "d"]
+      {
+        range = "30d"
+        aggregation = ["4h", "1d"]
+      }
+    ]
+  }
+  shift_allowed = ["m", "h", "d"]
 }
 ```
