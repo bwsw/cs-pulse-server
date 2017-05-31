@@ -1,6 +1,7 @@
 package com.bwsw.pulse.controllers
 
 import com.bwsw.pulse.models._
+import com.bwsw.pulse.validators._
 import org.influxdb.dto.QueryResult
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra._
@@ -17,6 +18,39 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
 
   val logger: Logger =  LoggerFactory.getLogger(getClass)
 
+
+  def createResourceView(concreteResource: Resource, concreteView: ViewFabric, params: scalatra.Params): View = {
+    val sourceData: QueryResult = concreteResource.getResult(params)
+    val view = concreteView.prepareView(sourceData, params)
+    view
+  }
+
+  def mainHandler(concreteResource: Resource, concreteView: ViewFabric, params: scalatra.Params, validator: Validator) = {
+    val (errors, isValid) = validator.validate(params)
+    isValid match {
+      case true => createResourceView(concreteResource, concreteView, params)
+      case false => BadRequest(errors)
+    }
+  }
+
+
+  val vmValidator = new NullValidator(new UuidValidator(new VmUuidValidator))
+  val diskUuidValidator = new NullValidator(new UuidValidator(new DiskValidator))
+  val rangeValidator = new NullValidator(new TimeValidator(new RangeValidator))
+  val aggregationValidator = new NullValidator(new TimeValidator(new AggregationValidator))
+  val macValidator = new NullValidator(new MacValidator)
+  val shiftValidator = new NullValidator(new ShiftValidator)
+
+  val cpuValidator = new Validators(List(vmValidator, rangeValidator,
+    aggregationValidator, shiftValidator))
+  val ramValidator = new Validators(List(vmValidator, rangeValidator,
+    aggregationValidator, shiftValidator))
+  val diskValidator = new Validators(List(vmValidator, diskUuidValidator, rangeValidator,
+    aggregationValidator, shiftValidator))
+  val networkValidator = new Validators(List(vmValidator, macValidator, rangeValidator,
+    aggregationValidator, shiftValidator))
+
+
   val cpu: Resource = new Cpu
   val cpuView: ViewFabric = new CpuViewFabric
 
@@ -29,35 +63,35 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   val network: Resource = new Network
   val networkView: ViewFabric = new NetworkViewFabric
 
+
+
   before() {
     contentType = formats("json")
   }
 
   get("/cputime/:uuid/:range/:aggregation/:shift") {
     logger.debug(s"Cpu time: $params")
-    createResourceView(cpu, cpuView, params)
+
+    mainHandler(cpu, cpuView, params, cpuValidator)
   }
 
   get("/ram/:uuid/:range/:aggregation/:shift") {
     logger.debug(s"Ram: $params")
-    createResourceView(ram, ramView, params)
+
+    mainHandler(ram, ramView, params, ramValidator)
   }
 
   get("/network-interface/:uuid/:mac/:range/:aggregation/:shift") {
     logger.debug(s"Network: $params")
-    createResourceView(network, networkView, params)
+
+    mainHandler(network, networkView, params, ramValidator)
   }
 
   get("/disk/:uuid/:diskUuid/:range/:aggregation/:shift") {
     logger.debug(s"Disk: $params")
-    createResourceView(disk, diskView, params)
+
+    mainHandler(disk, diskView, params, ramValidator)
   }
 
-  def createResourceView(concreteResource: Resource, concreteView: ViewFabric, params: scalatra.Params): View = {
-    val sourceData: QueryResult = concreteResource.getResult(params)
-    val view = concreteView.prepareView(sourceData, params)
-    view
-  }
+
 }
-
-
