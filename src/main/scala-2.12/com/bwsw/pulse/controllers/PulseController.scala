@@ -84,13 +84,13 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   get("/network-interface/:uuid/:mac/:range/:aggregation/:shift") {
     logger.debug(s"Network: $params")
 
-    mainHandler(network, networkView, params, ramValidator)
+    mainHandler(network, networkView, params, networkValidator)
   }
 
   get("/disk/:uuid/:diskUuid/:range/:aggregation/:shift") {
     logger.debug(s"Disk: $params")
 
-    mainHandler(disk, diskView, params, ramValidator)
+    mainHandler(disk, diskView, params, diskValidator)
   }
 
 
