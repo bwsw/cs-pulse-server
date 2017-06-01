@@ -199,3 +199,35 @@ http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/08:ED:B9:
     ]
 }
 ```
+
+
+##### Response with null value:
+```
+{
+    measurement: cputime,
+    uuid: 550e8400-e29b-41d4-a716-446655440000,
+    range: 1d,
+    aggregation: 1h,
+    shift: 1w,
+    results: 
+    [
+        {
+            cpu: "50"
+        },
+        {
+            cpu: "70"
+        },
+        {
+            cpu: "40"
+        },
+        {
+            cpu: ""
+        },
+        {
+            cpu: ""
+        },
+        {
+            cpu: "60"
+        }
+    ]
+}
