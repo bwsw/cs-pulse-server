@@ -25,7 +25,7 @@ class NullValidator(validator: Validator) extends ValidationDecorator(validator)
     specIsValid match {
       case true =>
         val (errors, isValid) = validator.validate(params)
-        (List(message) ::: errors, specIsValid && isValid)
+        (errors, specIsValid && isValid)
       case false => (List(message), false)
     }
   }

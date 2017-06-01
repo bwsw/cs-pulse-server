@@ -34,12 +34,12 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   }
 
 
-  val vmValidator = new NullValidator(new UuidValidator(new VmUuidValidator))
-  val diskUuidValidator = new NullValidator(new UuidValidator(new DiskValidator))
-  val rangeValidator = new NullValidator(new TimeValidator(new RangeValidator))
-  val aggregationValidator = new NullValidator(new TimeValidator(new AggregationValidator))
-  val macValidator = new NullValidator(new MacValidator)
-  val shiftValidator = new NullValidator(new ShiftValidator)
+  val vmValidator = new UuidValidator(new VmUuidValidator)
+  val diskUuidValidator = new UuidValidator(new DiskValidator)
+  val rangeValidator = new TimeValidator(new RangeValidator)
+  val aggregationValidator = new TimeValidator(new AggregationValidator)
+  val macValidator = new MacValidator
+  val shiftValidator = new ShiftValidator
 
   val cpuValidator = new Validators(List(vmValidator, rangeValidator,
     aggregationValidator, shiftValidator))
@@ -92,6 +92,9 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
 
     mainHandler(disk, diskView, params, diskValidator)
   }
+
+  //TODO implement not found page.
+  notFound(pass)
 
 
 }

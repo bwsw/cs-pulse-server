@@ -10,7 +10,7 @@ class CpuViewFabric extends ViewFabric {
     val data: mutable.ArrayBuffer[CpuViewData] = mutable.ArrayBuffer()
 
     val series = sourceData.getResults.asScala.head.getSeries.asScala.head
-    series.getValues.forEach(v => data.append(CpuViewData(v.get(1).toString)))
+    series.getValues.forEach(v => data.append(CpuViewData(getValue(v, 1))))
 
     CpuViewMeta(series.getName, params("uuid"), params("range"), params("aggregation"), params("shift"), data)
   }
@@ -22,7 +22,7 @@ class RamViewFabric extends ViewFabric {
     val data: mutable.ArrayBuffer[RamViewData] = mutable.ArrayBuffer()
 
     val series = sourceData.getResults.asScala.head.getSeries.asScala.head
-    series.getValues.forEach(v => data.append(RamViewData(v.get(1).toString)))
+    series.getValues.forEach(v => data.append(RamViewData(getValue(v, 1))))
 
     RamViewMeta(series.getName, params("uuid"), params("range"), params("aggregation"), params("shift"), data)
   }
@@ -36,11 +36,11 @@ class DiskViewFabric extends ViewFabric {
     val series = sourceData.getResults.asScala.head.getSeries.asScala.head
     series.getValues.forEach(v => data.append(
       DiskViewData(
-        v.get(1).toString,
-        v.get(2).toString,
-        v.get(3).toString,
-        v.get(4).toString,
-        v.get(5).toString)))
+        getValue(v, 1),
+        getValue(v, 2),
+        getValue(v, 3),
+        getValue(v, 4),
+        getValue(v, 5))))
 
     DiskViewMeta(
       series.getName,
@@ -61,14 +61,14 @@ class NetworkViewFabric extends ViewFabric {
     val series = sourceData.getResults.asScala.head.getSeries.asScala.head
     series.getValues.forEach(v => data.append(
       NetworkViewData(
-        v.get(1).toString,
-        v.get(2).toString,
-        v.get(3).toString,
-        v.get(4).toString,
-        v.get(5).toString,
-        v.get(6).toString,
-        v.get(7).toString,
-        v.get(8).toString)))
+        getValue(v, 1),
+        getValue(v, 2),
+        getValue(v, 3),
+        getValue(v, 4),
+        getValue(v, 5),
+        getValue(v, 6),
+        getValue(v, 7),
+        getValue(v, 8))))
 
     NetworkViewMeta(
       series.getName,

@@ -25,10 +25,11 @@ abstract class ValidationDecorator(validator: Validator) extends Validator {
 
   override def validate(params: Map[String, String]): (List[String], Boolean) = {
     val specIsValid = specValidate(params)
-    val (errors, isValid) = validator.validate(params)
     specIsValid match {
-      case true => (errors, specIsValid && isValid)
-      case false => (List(message) ::: errors, specIsValid && isValid)
+      case true =>
+        val (errors, isValid) = validator.validate(params)
+        (errors, specIsValid && isValid)
+      case false => (List(message), specIsValid)
     }
   }
 }
