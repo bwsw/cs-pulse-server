@@ -93,8 +93,4 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
     mainHandler(disk, diskView, params, diskValidator)
   }
 
-  //TODO implement not found page.
-  notFound(pass)
-
-
 }
