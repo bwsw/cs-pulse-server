@@ -35,7 +35,7 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 - [x] &nbsp; valid RESTful GET methods according to above specification
 - [x] &nbsp; JSON for responses
 - [ ] &nbsp; Configurable nginx cache time (in seconds) for repeatable requests, default 10 seconds
-- [ ] &nbsp; Set what kind of aggregation can there be for each range.
+- [x] &nbsp; Set what kind of aggregation can there be for each range.
 
 
 
