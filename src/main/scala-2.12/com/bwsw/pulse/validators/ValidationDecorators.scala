@@ -20,16 +20,6 @@ class UuidValidator(validator: Validator) extends ValidationDecorator(validator)
 class NullValidator(validator: Validator) extends ValidationDecorator(validator) {
   val message = s"Argument $fieldName must not be empty"
 
-  override def validate(params: Map[String, String]): (List[String], Boolean) = {
-    val specIsValid = specValidate(params)
-    specIsValid match {
-      case true =>
-        val (errors, isValid) = validator.validate(params)
-        (errors, specIsValid && isValid)
-      case false => (List(message), false)
-    }
-  }
-
   override def specValidate(params: Map[String, String]): Boolean = {
     var res: Boolean = true
     params.keys.toList.contains(fieldName) match {

@@ -45,7 +45,7 @@ class Validators(validators: List[Validator]) extends Validator {
   override def validate(params: Map[String, String]): (List[String], Boolean) = {
     validators.foldLeft(List[String](), true)((acc, validator) => {
       val (errors, isValid) = validator.validate(params)
-      (acc._1.:::(errors), acc._2 && isValid)
+      (errors.:::(acc._1), acc._2 && isValid)
     })
   }
 
