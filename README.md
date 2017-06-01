@@ -67,11 +67,8 @@ results: [
   results: [...]
 }
 ```
-### Class diagram:
-![alt text](https://github.com/bwsw/cs-pulse-server/blob/master/PulseDiagram2.png?raw=true)
-
-### Component diagram:
-![alt text](https://github.com/bwsw/cs-pulse-server/blob/master/pulse_component.png?raw=true)
+### Design:
+https://github.com/bwsw/cs-pulse-server/wiki/Design
 
 ### Request/Response examples:
 
