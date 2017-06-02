@@ -1,7 +1,7 @@
 package com.bwsw.pulse.validators
 
 
-class TimeValidator(validator: Validator) extends ValidationDecorator(validator) {
+class TimeFormatValidator(validator: Validator) extends ValidationDecorator(validator) {
   val message = s"Argument $fieldName must be in time format"
 
   override def specValidate(params: Map[String, String]): Boolean = {

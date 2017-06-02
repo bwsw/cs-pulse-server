@@ -36,10 +36,10 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
 
   val vmValidator = new UuidValidator(new VmUuidValidator)
   val diskUuidValidator = new UuidValidator(new DiskValidator)
-  val rangeValidator = new TimeValidator(new RangeValidator)
-  val aggregationValidator = new TimeValidator(new AggregationValidator)
+  val rangeValidator = new TimeFormatValidator(new RangeValidator)
+  val aggregationValidator = new TimeFormatValidator(new AggregationValidator)
   val macValidator = new MacValidator
-  val shiftValidator = new ShiftValidator
+  val shiftValidator = new TimeFormatValidator(new ShiftValidator)
 
   val cpuValidator = new Validators(List(vmValidator, rangeValidator,
     aggregationValidator, shiftValidator))

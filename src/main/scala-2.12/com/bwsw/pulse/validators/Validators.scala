@@ -1,5 +1,7 @@
 package com.bwsw.pulse.validators
 
+import com.bwsw.pulse.config.PulseConfig
+
 
 class VmUuidValidator extends Validator {
   val fieldName = "uuid"
@@ -12,31 +14,29 @@ class VmUuidValidator extends Validator {
 
 class RangeValidator extends Validator {
   val fieldName = "range"
-  val message = s"Argument $fieldName not included allowed interval"
+  val message = s"Argument $fieldName not included into allowed interval. See configuration file."
 
   override def specValidate(params: Map[String, String]): Boolean = {
-    //TODO implement validator related to config values.
-    true
+    PulseConfig.range_list.contains(params(fieldName))
   }
 }
 
 class AggregationValidator extends Validator {
   val fieldName = "aggregation"
-  val message = s"Argument $fieldName not included allowed interval"
+  val message = s"Argument $fieldName not included into allowed interval. See configuration file."
 
   override def specValidate(params: Map[String, String]): Boolean = {
-    //TODO implement validator related to config values.
-    true
+    val range_config = PulseConfig.range_config.filter(rangeCFG => rangeCFG.range == params("range")).head
+    range_config.allowed_aggregation.contains(params(fieldName))
   }
 }
 
 class ShiftValidator extends Validator {
   val fieldName = "shift"
-  val message = s"Argument $fieldName exception"
+  val message = s"Argument $fieldName not included into allowed interval. See configuration file."
 
   override def specValidate(params: Map[String, String]): Boolean = {
-    //TODO implement validator related to config values.
-    true
+    PulseConfig.shift_config.contains(params(fieldName).last.toString)
   }
 }
 
