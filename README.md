@@ -228,3 +228,14 @@ http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/08:ED:B9:
         }
     ]
 }
+```
+
+
+##### Bad request:
+```
+[
+    "Argument range must be in influx time format, with suffix",
+    "Argument uuid must be in UUID format"
+]
+```
+

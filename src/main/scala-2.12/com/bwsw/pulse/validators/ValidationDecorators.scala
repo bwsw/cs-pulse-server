@@ -2,7 +2,7 @@ package com.bwsw.pulse.validators
 
 
 class TimeFormatValidator(validator: Validator) extends ValidationDecorator(validator) {
-  val message = s"Argument $fieldName must be in time format"
+  val message = s"Argument $fieldName must be in influx time format, with suffix"
 
   override def specValidate(params: Map[String, String]): Boolean = {
     params(fieldName).matches("\\d*[smhwd]")
@@ -10,7 +10,7 @@ class TimeFormatValidator(validator: Validator) extends ValidationDecorator(vali
 }
 
 class UuidValidator(validator: Validator) extends ValidationDecorator(validator) {
-  override val message = s"Argument $fieldName must be uuid"
+  override val message = s"Argument $fieldName must be in UUID format"
 
   override def specValidate(params: Map[String, String]): Boolean = {
     params(fieldName).matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
