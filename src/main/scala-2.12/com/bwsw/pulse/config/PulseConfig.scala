@@ -7,24 +7,15 @@ import scala.collection.JavaConverters._
 case class RangeConfig(range: String, allowed_aggregation: List[String])
 case class InfluxConnection(host: String, port: String, username: String, password: String, database: String)
 
+
 object PulseConfig {
-  val conf = ConfigFactory.load()
+  private val conf = ConfigFactory.load()
 
   private val aggregations_allowed = "pulse_config.aggregations_allowed"
   private val influx_config_name = "pulse_config.influx"
   private val aggregation_config_name = "aggregation"
   private val range_config_name = "range"
   private val shift_config_name = "pulse_config.shift"
-
-
-  val range_config = renderRangeConfig
-  val range_list = range_config.map(cfg => cfg.range)
-
-  val shift_config = conf.getStringList(shift_config_name)
-
-  val influx_connection = renderInfluxConfig
-
-
 
   private def renderInfluxConfig: InfluxConnection = {
     val influx_config = conf.getConfig(influx_config_name)
@@ -44,5 +35,13 @@ object PulseConfig {
         range_config.getStringList(aggregation_config_name).asScala.toList)
     }.toList
   }
+
+  /**
+    * Available configs
+    */
+  var range_config: List[RangeConfig] = renderRangeConfig
+  var range_list: List[String] = range_config.map(cfg => cfg.range)
+  var shift_config: List[String] = conf.getStringList(shift_config_name).asScala.toList
+  var influx_connection: InfluxConnection = renderInfluxConfig
 
 }
