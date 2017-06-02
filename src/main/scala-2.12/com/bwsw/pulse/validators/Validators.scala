@@ -27,7 +27,7 @@ class AggregationValidator extends Validator {
 
   override def specValidate(params: Map[String, String]): Boolean = {
     val range_config = PulseConfig.range_config.filter(rangeCFG => rangeCFG.range == params("range")).head
-    range_config.allowed_aggregation.contains(params(fieldName))
+    range_config.aggregation.contains(params(fieldName))
   }
 }
 

@@ -1,5 +1,6 @@
 package com.bwsw.pulse.controllers
 
+import com.bwsw.pulse.config.PulseConfig
 import com.bwsw.pulse.models._
 import com.bwsw.pulse.validators._
 import org.influxdb.dto.QueryResult
@@ -93,4 +94,9 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
     mainHandler(disk, diskView, params, diskValidator)
   }
 
+  get("/permitted-intervals") {
+    logger.debug(s"Permitted intervals")
+
+    PermittedIntervals(PulseConfig.shift_config, PulseConfig.range_config)
+  }
 }

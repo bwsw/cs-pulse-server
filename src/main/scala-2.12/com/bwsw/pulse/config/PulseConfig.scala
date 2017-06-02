@@ -4,7 +4,7 @@ package com.bwsw.pulse.config
 import com.typesafe.config._
 import scala.collection.JavaConverters._
 
-case class RangeConfig(range: String, allowed_aggregation: List[String])
+case class RangeConfig(range: String, aggregation: List[String])
 case class InfluxConnection(host: String, port: String, username: String, password: String, database: String)
 
 

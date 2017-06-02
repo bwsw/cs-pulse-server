@@ -198,6 +198,23 @@ http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/08:ED:B9:
 ```
 
 
+```
+{
+shift: ["m", "h", "d"],
+aggregations_allowed: [
+    {
+        range: "15m",
+        aggregation: ["1m", "5m"]
+    },
+    {
+        range: "30m",
+        aggregation: ["1m", "5m", "15m"]
+    }
+  ]
+}
+```
+
+
 ##### Response with null value:
 ```
 {
