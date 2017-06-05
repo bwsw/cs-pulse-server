@@ -248,15 +248,6 @@ aggregations_allowed: [
 ```
 
 
-##### Bad request:
-```
-[
-    "Argument range must be in influx time format, with suffix",
-    "Argument uuid must be in UUID format"
-]
-```
-
-
 ##### Error response:
 Response status code: 503, 400, 404
 Response example:
