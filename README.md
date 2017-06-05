@@ -250,6 +250,7 @@ aggregations_allowed: [
 
 ##### Error response:
 Response status code: 503, 400, 404
+
 Response example:
 ```
 {
