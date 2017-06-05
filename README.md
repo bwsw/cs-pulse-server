@@ -256,3 +256,21 @@ aggregations_allowed: [
 ]
 ```
 
+
+##### Error response:
+Response status code: 503, 400, 404
+Response example:
+```
+{
+    measurement: cputime,
+    uuid: 550e8400-e29b-41d4-a716,
+    range: 1dh,
+    aggregation: 1h,
+    shift: 1w,
+    errors:
+    [
+        "Argument range must be in influx time format, with suffix",
+        "Argument uuid must be in UUID format"
+    ]
+}
+```
