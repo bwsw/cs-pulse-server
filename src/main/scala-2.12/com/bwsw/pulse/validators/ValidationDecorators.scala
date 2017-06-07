@@ -30,3 +30,11 @@ class NullValidator(validator: Validator) extends ValidationDecorator(validator)
   }
 }
 
+class AggregationRangeValidator(validator: Validator) extends ValidationDecorator(validator) {
+  val rangeValidator = new RangeValidator
+  val message = s"Argument $fieldName: ${rangeValidator.fieldName} argument must be specified firstly"
+
+  override def specValidate(params: Map[String, String]): Boolean = {
+    rangeValidator.validate(params)._2
+  }
+}

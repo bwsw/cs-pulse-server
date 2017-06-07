@@ -28,9 +28,12 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
 
   def mainHandler(concreteResource: Resource, concreteView: ViewFabric, params: scalatra.Params, validator: Validator) = {
     val (errors, isValid) = validator.validate(params)
+
     isValid match {
       case true => createResourceView(concreteResource, concreteView, params)
-      case false => BadRequest(errors)
+      case false =>
+        logger.debug(errors.toString())
+        BadRequest(errors)
     }
   }
 
@@ -38,7 +41,7 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   val vmValidator = new UuidValidator(new VmUuidValidator)
   val diskUuidValidator = new UuidValidator(new DiskValidator)
   val rangeValidator = new TimeFormatValidator(new RangeValidator)
-  val aggregationValidator = new TimeFormatValidator(new AggregationValidator)
+  val aggregationValidator = new AggregationRangeValidator(new TimeFormatValidator(new AggregationValidator))
   val macValidator = new MacValidator
   val shiftValidator = new TimeFormatValidator(new ShiftValidator)
 
