@@ -4,6 +4,11 @@ version := "1.0"
 
 scalaVersion := "2.12.2"
 
+assemblyMergeStrategy in assembly := {
+  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  case x => MergeStrategy.first
+}
+
 libraryDependencies += "org.scalatra" % "scalatra_2.12" % "2.5.0"
 libraryDependencies += "org.influxdb" % "influxdb-java" % "2.5"
 libraryDependencies += "javax.servlet" % "servlet-api" % "2.5"
@@ -17,3 +22,10 @@ libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.7" % "runtime
 libraryDependencies += "junit" % "junit" % "4.4"
 libraryDependencies += "org.mockito" % "mockito-all" % "1.10.19"
 libraryDependencies += "com.typesafe" % "config" % "1.3.1"
+
+
+mainClass in assembly := Some("com.bwsw.pulse.Launcher")
+
+libraryDependencies += "javax.servlet" % "javax.servlet-api" % "3.0.1"
+//
+enablePlugins(WarPlugin)
