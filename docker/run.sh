@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-mkdir -p /var/log/rest
-touch /var/log/rest/supervisor.log
+sed -i 's/$inactive/'"${NGINX_CACHE_TIME:-15s}"'/g' /etc/nginx/nginx.conf
 
-echo "Running. See logs in /var/log/rest"
-exec supervisord -n > /var/log/rest/supervisor.log 2>&1
+/usr/sbin/nginx ; java -jar /opt/bin/jetty.jar --path /pulse /var/lib/jetty/webapps/ROOT.war

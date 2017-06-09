@@ -1,7 +1,10 @@
 package com.bwsw.pulse.config
 
 
+import java.io.File
+
 import com.typesafe.config._
+
 import scala.collection.JavaConverters._
 
 case class RangeConfig(range: String, aggregation: List[String])
@@ -9,7 +12,7 @@ case class InfluxConnection(host: String, port: String, username: String, passwo
 
 
 object PulseConfig {
-  private val conf = ConfigFactory.load()
+  private val conf = ConfigFactory.parseFile(new File("/etc/pulse/application.conf")).resolve()
 
   private val aggregations_allowed = "pulse_config.aggregations_allowed"
   private val influx_config_name = "pulse_config.influx"
