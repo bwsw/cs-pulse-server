@@ -6,31 +6,42 @@ import scala.collection.mutable
 
 
 class CpuViewFabric extends ViewFabric {
-  override def prepareView(sourceData: QueryResult, params: Map[String, String]): CpuViewMeta = {
+  override def prepareSpecView(sourceData: QueryResult, params: Map[String, String]): CpuViewMeta = {
     val data: mutable.ArrayBuffer[CpuViewData] = mutable.ArrayBuffer()
 
     val series = sourceData.getResults.asScala.head.getSeries.asScala.head
+
     series.getValues.forEach(v => data.append(CpuViewData(getValue(v, 1))))
 
-    CpuViewMeta(series.getName, params("uuid"), params("range"), params("aggregation"), params("shift"), data)
+    CpuViewMeta(
+      uuid = params("uuid"),
+      range = params("range"),
+      aggregation = params("aggregation"),
+      shift = params("shift"),
+      result = data)
   }
 }
 
 
 class RamViewFabric extends ViewFabric {
-  override def prepareView(sourceData: QueryResult, params: Map[String, String]): RamViewMeta = {
+  override def prepareSpecView(sourceData: QueryResult, params: Map[String, String]): RamViewMeta = {
     val data: mutable.ArrayBuffer[RamViewData] = mutable.ArrayBuffer()
 
     val series = sourceData.getResults.asScala.head.getSeries.asScala.head
     series.getValues.forEach(v => data.append(RamViewData(getValue(v, 1))))
 
-    RamViewMeta(series.getName, params("uuid"), params("range"), params("aggregation"), params("shift"), data)
+    RamViewMeta(
+      uuid = params("uuid"),
+      range = params("range"),
+      aggregation = params("aggregation"),
+      shift = params("shift"),
+      result = data)
   }
 }
 
 
 class DiskViewFabric extends ViewFabric {
-  override def prepareView(sourceData: QueryResult, params: Map[String, String]): DiskViewMeta = {
+  override def prepareSpecView(sourceData: QueryResult, params: Map[String, String]): DiskViewMeta = {
     val data: mutable.ArrayBuffer[DiskViewData] = mutable.ArrayBuffer()
 
     val series = sourceData.getResults.asScala.head.getSeries.asScala.head
@@ -43,19 +54,18 @@ class DiskViewFabric extends ViewFabric {
         getValue(v, 5))))
 
     DiskViewMeta(
-      series.getName,
-      params("uuid"),
-      params("range"),
-      params("aggregation"),
-      params("shift"),
-      params("diskUuid"),
-      data)
+      uuid = params("uuid"),
+      range = params("range"),
+      aggregation = params("aggregation"),
+      shift = params("shift"),
+      diskUuid = params("diskUuid"),
+      result = data)
   }
 }
 
 
 class NetworkViewFabric extends ViewFabric {
-  override def prepareView(sourceData: QueryResult, params: Map[String, String]): NetworkViewMeta = {
+  override def prepareSpecView(sourceData: QueryResult, params: Map[String, String]): NetworkViewMeta = {
     val data: mutable.ArrayBuffer[NetworkViewData] = mutable.ArrayBuffer()
 
     val series = sourceData.getResults.asScala.head.getSeries.asScala.head
@@ -71,12 +81,11 @@ class NetworkViewFabric extends ViewFabric {
         getValue(v, 8))))
 
     NetworkViewMeta(
-      series.getName,
-      params("uuid"),
-      params("range"),
-      params("aggregation"),
-      params("shift"),
-      params("mac"),
-      data)
+      uuid = params("uuid"),
+      range = params("range"),
+      aggregation = params("aggregation"),
+      shift = params("shift"),
+      mac = params("mac"),
+      result = data)
   }
 }

@@ -20,20 +20,20 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   val logger: Logger =  LoggerFactory.getLogger(getClass)
 
 
-  def createResourceView(concreteResource: Resource, concreteView: ViewFabric, params: scalatra.Params): View = {
+  def createResourceView(concreteResource: Resource, concreteViewFabric: ViewFabric, params: scalatra.Params): View = {
     val sourceData: QueryResult = concreteResource.getResult(params)
-    val view = concreteView.prepareView(sourceData, params)
+    val view = concreteViewFabric.prepareView(sourceData, params)
     view
   }
 
-  def mainHandler(concreteResource: Resource, concreteView: ViewFabric, params: scalatra.Params, validator: Validator) = {
+  def mainHandler(concreteResource: Resource, concreteViewFabric: ViewFabric, params: scalatra.Params, validator: Validator) = {
     val (errors, isValid) = validator.validate(params)
 
     isValid match {
-      case true => createResourceView(concreteResource, concreteView, params)
+      case true => createResourceView(concreteResource, concreteViewFabric, params)
       case false =>
         logger.debug(errors.toString())
-        BadRequest(errors)
+        BadRequest(ErrorView(params, errors))
     }
   }
 
@@ -101,5 +101,11 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
     logger.debug(s"Permitted intervals")
 
     PermittedIntervals(PulseConfig.shift_config, PulseConfig.range_config)
+  }
+
+  notFound {
+    logger.debug(s"Page not found")
+
+    NotFound(ErrorView(Map(), List("Page not found")))
   }
 }
