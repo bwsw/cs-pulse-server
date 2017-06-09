@@ -266,3 +266,16 @@ Response example:
     ]
 }
 ```
+
+
+##### Known error messages:
+```
+Page not found
+Argument <fieldName> not included into allowed interval. See configuration file.
+Argument <fieldName> not matches.
+Argument <fildname>: <another fieldname> argument must be specified firstly.
+Argument <fieldName> must be in influx time format, with suffix.
+Argument <fieldName> must be in UUID format.
+```
+
+Additional error messages from QueryResult.

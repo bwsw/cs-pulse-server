@@ -42,7 +42,7 @@ class ShiftValidator extends Validator {
 
 class MacValidator extends Validator {
   val fieldName = "mac"
-  val message = s"Argument $fieldName not matches"
+  val message = s"Argument $fieldName not matches."
 
   override def specValidate(params: Map[String, String]): Boolean = {
     params(fieldName).matches("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$")
@@ -51,7 +51,7 @@ class MacValidator extends Validator {
 
 class DiskValidator extends Validator {
   val fieldName = "diskUuid"
-  val message = s"Argument $fieldName exception"
+  val message = s"Argument $fieldName exception."
 
   override def specValidate(params: Map[String, String]): Boolean = {
     true
