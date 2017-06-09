@@ -10,7 +10,6 @@ class CpuViewFabric extends ViewFabric {
     val data: mutable.ArrayBuffer[CpuViewData] = mutable.ArrayBuffer()
 
     val series = sourceData.getResults.asScala.head.getSeries.asScala.head
-
     series.getValues.forEach(v => data.append(CpuViewData(getValue(v, 1))))
 
     CpuViewMeta(

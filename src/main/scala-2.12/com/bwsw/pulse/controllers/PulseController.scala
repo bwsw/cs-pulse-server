@@ -20,10 +20,11 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   val logger: Logger =  LoggerFactory.getLogger(getClass)
 
 
-  def createResourceView(concreteResource: Resource, concreteViewFabric: ViewFabric, params: scalatra.Params): View = {
+  def createResourceView(concreteResource: Resource, concreteViewFabric: ViewFabric, params: scalatra.Params): ActionResult = {
     val sourceData: QueryResult = concreteResource.getResult(params)
-    val view = concreteViewFabric.prepareView(sourceData, params)
-    view
+    val viewResult = concreteViewFabric.prepareView(sourceData, params)
+    if (viewResult._1) Ok(viewResult._2)
+    else InternalServerError(viewResult._2)
   }
 
   def mainHandler(concreteResource: Resource, concreteViewFabric: ViewFabric, params: scalatra.Params, validator: Validator) = {

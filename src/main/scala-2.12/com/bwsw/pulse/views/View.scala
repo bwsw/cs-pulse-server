@@ -1,14 +1,16 @@
 package com.bwsw.pulse.views
 
 import org.influxdb.dto.QueryResult
+import org.scalatra.InternalServerError
+
 import scala.collection.JavaConverters._
 
 
 trait ViewFabric {
-  def prepareView(sourceData: QueryResult, params: Map[String, String]): View = {
+  def prepareView(sourceData: QueryResult, params: Map[String, String]): (Boolean, View) = {
     val error = checkQueryResult(sourceData)
-    if (error.isDefined) return ErrorView(params, List(error.get))
-    prepareSpecView(sourceData, params)
+    if (error.isDefined) return (false, ErrorView(params, List(error.get)))
+    (true, prepareSpecView(sourceData, params))
   }
 
   def prepareSpecView(sourceData: QueryResult, params: Map[String, String]): View
@@ -20,6 +22,8 @@ trait ViewFabric {
     else if (sourceData.getResults.asScala.head.hasError) {
       Some(sourceData.getResults.asScala.head.getError)
     }
+    else if (sourceData.getResults.asScala.head.getSeries == null)
+      Some("Empty result")
     else None
   }
 
