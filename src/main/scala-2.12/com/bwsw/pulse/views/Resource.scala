@@ -1,7 +1,7 @@
 package com.bwsw.pulse.views
 
 
-case class CpuViewMeta(measurement: String,
+case class CpuViewMeta(measurement: String = "cputime",
                        uuid: String,
                        range: String,
                        aggregation: String,
@@ -10,7 +10,7 @@ case class CpuViewMeta(measurement: String,
 case class CpuViewData(cpu: String) extends View
 
 
-case class RamViewMeta(measurement: String,
+case class RamViewMeta(measurement: String = "ram",
                        uuid: String,
                        range: String,
                        aggregation: String,
@@ -19,7 +19,7 @@ case class RamViewMeta(measurement: String,
 case class RamViewData(rss: String) extends View
 
 
-case class DiskViewMeta(measurement: String,
+case class DiskViewMeta(measurement: String = "disk",
                         uuid: String,
                         range: String,
                         aggregation: String,
@@ -33,7 +33,7 @@ case class DiskViewData(ioErrors: String,
                         writeIOPS: String) extends View
 
 
-case class NetworkViewMeta(measurement: String,
+case class NetworkViewMeta(measurement: String = "network",
                            uuid: String,
                            range: String,
                            aggregation: String,

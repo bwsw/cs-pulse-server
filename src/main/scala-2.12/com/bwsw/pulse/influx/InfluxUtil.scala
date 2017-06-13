@@ -22,6 +22,13 @@ object InfluxUtil {
   }
 
   def executeQuery(query: String): QueryResult = {
-    influxDB.query(new Query(query, dbName))
+    try {
+      influxDB.query(new Query(query, dbName))
+    } catch {
+      case re: RuntimeException =>
+        val error = new QueryResult
+        error.setError("Influx connection exception.")
+        error
+    }
   }
 }

@@ -89,7 +89,7 @@ class TestCpuView {
   @Test
   def testPrepareView() = {
     val viewFabric = new CpuViewFabric
-    val view: CpuViewMeta = viewFabric.prepareView(queryResult, params)
+    val view: CpuViewMeta = viewFabric.prepareSpecView(queryResult, params)
 
     Assert.assertEquals(view.measurement, measurement)
     Assert.assertEquals(view.uuid, params("uuid"))
@@ -106,7 +106,7 @@ class TestCpuView {
   @Test
   def testBrokenPrepareView() = {
     val viewFabric = new CpuViewFabric
-    val view: CpuViewMeta = viewFabric.prepareView(brokenQueryResult, params)
+    val view: CpuViewMeta = viewFabric.prepareSpecView(brokenQueryResult, params)
 
     Assert.assertEquals(view.measurement, measurement)
     Assert.assertEquals(view.uuid, params("uuid"))

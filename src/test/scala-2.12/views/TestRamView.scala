@@ -58,7 +58,7 @@ class TestRamView {
   @Test
   def testPrepareView() = {
     val viewFabric = new RamViewFabric
-    val view: RamViewMeta = viewFabric.prepareView(queryResult, params)
+    val view: RamViewMeta = viewFabric.prepareSpecView(queryResult, params)
 
     Assert.assertEquals(view.measurement, measurement)
     Assert.assertEquals(view.uuid, params("uuid"))
