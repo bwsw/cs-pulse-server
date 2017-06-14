@@ -1,4 +1,4 @@
-name := "pulse-plugin"
+name := "cs-pulse-server"
 
 version := "1.0-SNAPSHOT"
 
@@ -21,6 +21,7 @@ pomExtra :=
 fork in run := true
 fork in Test := true
 licenses := Seq("Apache 2" -> url("http://www.apache.org/licenses/LICENSE-2.0"))
+homepage := Some(url("https://github.com/bwsw/cs-pulse-server"))
 pomIncludeRepository := { _ => false }
 scalacOptions += "-feature"
 scalacOptions += "-deprecation"
@@ -65,5 +66,5 @@ libraryDependencies += "com.typesafe" % "config" % "1.3.1"
 mainClass in assembly := Some("com.bwsw.pulse.Launcher")
 
 libraryDependencies += "javax.servlet" % "javax.servlet-api" % "3.0.1"
-//
+
 enablePlugins(WarPlugin)

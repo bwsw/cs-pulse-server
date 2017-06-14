@@ -3,7 +3,7 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 
 ### Server specification
 
-##### Request types
+#### Request types
 
 1. CPU time, query param /cputime/uuid/range/aggregation/shift
 * uuid - host uuid
@@ -24,22 +24,33 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 * have addition value disk-uuid
 * can have many parameters which are gotten from a sensor
 
-##### Features:
+#### Features:
 
 - [x] &nbsp; Implement with trivial HTTP REST framework like Scalatra or Play,
-- [ ] &nbsp; build and deploy as docker container,
-- [ ] &nbsp; attach to dockerhub
+- [x] &nbsp; build and deploy as docker container,
+- [x] &nbsp; attach to dockerhub
 - [x] &nbsp; no external database required (except influxdb)
-- [ ] &nbsp; implement per-client query limit/sec parameter configurable with ENVARS with Nginx (#20 queries per second) 
-- [ ] &nbsp; implement behind nginx
+- [x] &nbsp; implement per-client query limit/sec parameter configurable with ENVARS with Nginx (#20 queries per second) 
+- [x] &nbsp; implement behind nginx
 - [x] &nbsp; valid RESTful GET methods according to above specification
 - [x] &nbsp; JSON for responses
-- [ ] &nbsp; Configurable nginx cache time (in seconds) for repeatable requests, default 10 seconds
+- [x] &nbsp; Configurable nginx cache time (in seconds) for repeatable requests, default 10 seconds
 - [x] &nbsp; Set what kind of aggregation can there be for each range.
 
 
-
-
+### Usage:
+```
+# docker pull bwsw/cs-pulse-server
+# docker run --restart=always -d --name pulse-server \
+    -e INFLUX_HOST localhost \
+    -e INFLUX_PORT 8086 \
+    -e INFLUX_USER puls \
+    -e INFLUX_PASSWORD puls \
+    -e INFLUX_DB secret \
+    -e NGINX_CACHE_TIME \
+    -v /path/to/app.conf:/etc/pulse/application.conf \
+    -p 80:9090 bwsw/cs-pulse-server
+```
 
 ### Data json format:
 ```
