@@ -1,7 +1,6 @@
 package com.bwsw.pulse.views
 
 import org.influxdb.dto.QueryResult
-import scala.collection.JavaConverters._
 import scala.collection.mutable
 
 
@@ -9,9 +8,8 @@ class CpuViewFabric extends ViewFabric {
   override def prepareSpecView(sourceData: QueryResult, params: Map[String, String]): CpuViewMeta = {
     val data: mutable.ArrayBuffer[CpuViewData] = mutable.ArrayBuffer()
 
-    val series = sourceData.getResults.asScala.head.getSeries.asScala.head
+    val series = get_series(sourceData)
     series.getValues.forEach(v => data.append(CpuViewData(getValue(v, 1))))
-
     CpuViewMeta(
       uuid = params("uuid"),
       range = params("range"),
@@ -26,9 +24,8 @@ class RamViewFabric extends ViewFabric {
   override def prepareSpecView(sourceData: QueryResult, params: Map[String, String]): RamViewMeta = {
     val data: mutable.ArrayBuffer[RamViewData] = mutable.ArrayBuffer()
 
-    val series = sourceData.getResults.asScala.head.getSeries.asScala.head
+    val series = get_series(sourceData)
     series.getValues.forEach(v => data.append(RamViewData(getValue(v, 1))))
-
     RamViewMeta(
       uuid = params("uuid"),
       range = params("range"),
@@ -43,7 +40,7 @@ class DiskViewFabric extends ViewFabric {
   override def prepareSpecView(sourceData: QueryResult, params: Map[String, String]): DiskViewMeta = {
     val data: mutable.ArrayBuffer[DiskViewData] = mutable.ArrayBuffer()
 
-    val series = sourceData.getResults.asScala.head.getSeries.asScala.head
+    val series = get_series(sourceData)
     series.getValues.forEach(v => data.append(
       DiskViewData(
         getValue(v, 1),
@@ -67,7 +64,7 @@ class NetworkViewFabric extends ViewFabric {
   override def prepareSpecView(sourceData: QueryResult, params: Map[String, String]): NetworkViewMeta = {
     val data: mutable.ArrayBuffer[NetworkViewData] = mutable.ArrayBuffer()
 
-    val series = sourceData.getResults.asScala.head.getSeries.asScala.head
+    val series = get_series(sourceData)
     series.getValues.forEach(v => data.append(
       NetworkViewData(
         getValue(v, 1),
