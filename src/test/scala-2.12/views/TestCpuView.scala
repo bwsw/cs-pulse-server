@@ -17,7 +17,7 @@ class TestCpuView {
 
   var brokenQueryResult: QueryResult = _
 
-  val measurement = "cpuTime"
+  val measurement = "cputime"
 
   @Before
   def initialize() = {
