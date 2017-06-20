@@ -8,6 +8,7 @@ ENV INFLUX_HOST=localhost \
     INFLUX_PASSWORD=puls \
     INFLUX_DB=secret \
     NGINX_CACHE_TIME=15s \
+    NGINX_RATE_LIMIT=20r/s \
     DEBUG=false \
 
     version=1.0-SNAPSHOT \

@@ -26,8 +26,8 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 
 #### Features:
 
-- [x] &nbsp; Implement with trivial HTTP REST framework like Scalatra or Play,
-- [x] &nbsp; build and deploy as docker container,
+- [x] &nbsp; Implement with HTTP REST framework Scalatra
+- [x] &nbsp; build and deploy as docker container
 - [x] &nbsp; attach to dockerhub
 - [x] &nbsp; no external database required (except influxdb)
 - [x] &nbsp; implement per-client query limit/sec parameter configurable with ENVARS with Nginx (#20 queries per second) 
@@ -45,9 +45,10 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
     -e INFLUX_HOST localhost \
     -e INFLUX_PORT 8086 \
     -e INFLUX_USER puls \
-    -e INFLUX_PASSWORD puls \
-    -e INFLUX_DB secret \
-    -e NGINX_CACHE_TIME \
+    -e INFLUX_PASSWORD secret \
+    -e INFLUX_DB puls \
+    -e NGINX_CACHE_TIME 15s \
+    -e NGINX_RATE_LIMIT 20r/s \
     -v /path/to/app.conf:/etc/pulse/application.conf \
     -p 80:9090 bwsw/cs-pulse-server
 ```
