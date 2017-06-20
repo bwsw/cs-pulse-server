@@ -11,7 +11,7 @@ ENV INFLUX_HOST=localhost \
     DEBUG=false \
 
     version=1.0-SNAPSHOT \
-    sbt_version=2.12 \
+    scala_version=2.12 \
     jetty_version=9.4.6.v20170531
 
 ADD ./docker /opt/bin/docker
@@ -23,7 +23,7 @@ RUN apt-get update && \
     mkdir -p /opt/bin && \
     mkdir -p /var/lib/jetty/webapps && \
     curl -o /opt/bin/jetty.jar http://central.maven.org/maven2/org/eclipse/jetty/jetty-runner/${jetty_version}/jetty-runner-${jetty_version}.jar && \
-    curl -o /var/lib/jetty/webapps/cs-pulse-server.war https://oss.sonatype.org/content/repositories/snapshots/com/bwsw/cs-pulse-server_${sbt_version}/${version}/cs-pulse-server_${sbt_version}-${version}.war && \
+    curl -o /var/lib/jetty/webapps/cs-pulse-server.war https://oss.sonatype.org/content/repositories/snapshots/com/bwsw/cs-pulse-server_${scala_version}/${version}/cs-pulse-server_${scala_version}-${version}.war && \
     mv /opt/bin/docker/nginx.conf /etc/nginx/nginx.conf && \
     rm /etc/nginx/sites-available/default
 
