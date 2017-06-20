@@ -15,7 +15,7 @@ class TestRamView {
   var queryResult: QueryResult = _
   var params: Map[String, String] = _
 
-  val measurement = "rss"
+  val measurement = "ram"
 
   @Before
   def initialize() = {

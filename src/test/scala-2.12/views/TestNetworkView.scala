@@ -15,7 +15,7 @@ class TestNetworkView {
   var queryResult: QueryResult = _
   var params: Map[String, String] = _
 
-  val measurement = "disk"
+  val measurement = "network"
 
   @Before
   def initialize() = {
