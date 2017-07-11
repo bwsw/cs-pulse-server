@@ -37,6 +37,10 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 - [x] &nbsp; Configurable nginx cache time (in seconds) for repeatable requests, default 10 seconds
 - [x] &nbsp; Set what kind of aggregation can there be for each range.
 
+#### Roadmap:
+
+- use Telegraf(TICK stack) as middle layer between server and database.
+
 
 ### Usage:
 ```
