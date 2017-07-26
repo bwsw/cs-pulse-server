@@ -46,13 +46,13 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 ```
 # docker pull bwsw/cs-pulse-server
 # docker run --restart=always -d --name pulse-server \
-    -e INFLUX_HOST localhost \
-    -e INFLUX_PORT 8086 \
-    -e INFLUX_USER puls \
-    -e INFLUX_PASSWORD secret \
-    -e INFLUX_DB puls \
-    -e NGINX_CACHE_TIME 15s \
-    -e NGINX_RATE_LIMIT 20r/s \
+    -e INFLUX_HOST=localhost \
+    -e INFLUX_PORT=8086 \
+    -e INFLUX_USER=puls \
+    -e INFLUX_PASSWORD=secret \
+    -e INFLUX_DB=puls \
+    -e NGINX_CACHE_TIME=15s \
+    -e NGINX_RATE_LIMIT=20r/s \
     -v /path/to/app.conf:/etc/pulse/application.conf \
     -p 80:9090 bwsw/cs-pulse-server
 ```
