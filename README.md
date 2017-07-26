@@ -58,18 +58,66 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 ```
 ### Config example:
 ```
-{
-shift: ["m", "h", "d"],
-aggregations_allowed: [
+pulse_config {
+  influx {
+    host =  "localhost"
+    host = ${?INFLUX_HOST}
+
+    port = "8086"
+    port = ${?INFLUX_PORT}
+
+    username = "username"
+    username = ${?INFLUX_USERNAME}
+
+    password = "password"
+    password = ${?INFLUX_PASSWORD}
+
+    database = "database"
+    database = ${?INFLUX_DATABASE}
+  }
+  aggregations_allowed = [
     {
-        range: "15m",
-        aggregation: ["1m", "5m"]
-    },
+      range = "15m"
+      aggregation = ["1m", "5m"]
+    }
     {
-        range: "30m",
-        aggregation: ["1m", "5m", "15m"]
+      range = "30m"
+      aggregation = ["1m", "5m", "15m"]
+    }
+    {
+      range = "1h"
+      aggregation = ["1m", "5m", "15m"]
+    }
+    {
+      range = "2h"
+      aggregation = ["5m", "15m", "30m"]
+    }
+    {
+      range = "4h"
+      aggregation = ["5m", "15m", "30m", "1h"]
+    }
+    {
+      range = "12h"
+      aggregation = ["15m", "30m", "1h"]
+    }
+    {
+      range = "1d"
+      aggregation = ["30m", "1h"]
+    }
+    {
+      range = "1w"
+      aggregation = ["1h", "4h"]
+    }
+    {
+      range = "30d"
+      aggregation = ["4h", "1d"]
+    }
+    {
+      range = "3h"
+      aggregation = ["4m", "6m"]
     }
   ]
+  shift = ["m", "h", "d"]
 }
 ```
 
