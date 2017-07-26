@@ -3,7 +3,7 @@ package views
 
 import java.util
 
-import com.bwsw.pulse.views.{DiskViewFabric, DiskViewMeta}
+import com.bwsw.cloudstack.pulse.views.{DiskViewFabric, DiskViewMeta}
 import org.junit._
 import org.influxdb.dto._
 

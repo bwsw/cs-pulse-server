@@ -1,4 +1,4 @@
-package com.bwsw.pulse.views
+package com.bwsw.cloudstack.pulse.views
 
 
 case class CpuViewMeta(measurement: String = "cputime",

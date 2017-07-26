@@ -3,8 +3,8 @@ package models
 
 import java.util
 
-import com.bwsw.pulse.influx.InfluxUtil
-import com.bwsw.pulse.models.Cpu
+import com.bwsw.cloudstack.pulse.influx.InfluxUtil
+import com.bwsw.cloudstack.pulse.models.Cpu
 import org.influxdb.InfluxDB
 import org.junit._
 import org.influxdb.dto._

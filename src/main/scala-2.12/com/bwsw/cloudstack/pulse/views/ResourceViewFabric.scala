@@ -1,4 +1,4 @@
-package com.bwsw.pulse.views
+package com.bwsw.cloudstack.pulse.views
 
 import org.influxdb.dto.QueryResult
 import scala.collection.mutable

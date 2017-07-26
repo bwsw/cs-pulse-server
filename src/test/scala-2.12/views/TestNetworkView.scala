@@ -2,7 +2,7 @@ package views
 
 import java.util
 
-import com.bwsw.pulse.views.{NetworkViewFabric, NetworkViewMeta}
+import com.bwsw.cloudstack.pulse.views.{NetworkViewFabric, NetworkViewMeta}
 import org.junit._
 import org.influxdb.dto._
 

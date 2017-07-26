@@ -3,7 +3,7 @@ package influx
 import java.util
 
 import org.junit._
-import com.bwsw.pulse.influx.InfluxUtil
+import com.bwsw.cloudstack.pulse.influx.InfluxUtil
 import org.influxdb.InfluxDB
 import org.influxdb.dto._
 import org.mockito.Mockito

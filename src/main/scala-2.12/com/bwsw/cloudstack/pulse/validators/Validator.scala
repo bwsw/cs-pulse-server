@@ -1,4 +1,4 @@
-package com.bwsw.pulse.validators
+package com.bwsw.cloudstack.pulse.validators
 
 
 abstract class Validator {

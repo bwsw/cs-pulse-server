@@ -1,7 +1,7 @@
 package models
 
 import org.junit._
-import com.bwsw.pulse.models._
+import com.bwsw.cloudstack.pulse.models._
 
 class TestPrepareQuery {
 

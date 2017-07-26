@@ -1,8 +1,8 @@
 package validators
 
 import org.junit._
-import com.bwsw.pulse.validators._
-import com.bwsw.pulse.config._
+import com.bwsw.cloudstack.pulse.validators._
+import com.bwsw.cloudstack.pulse.config._
 
 
 class TestValidator {
@@ -92,13 +92,13 @@ class TestValidator {
   @Test
   def testConfigRelatedValidators() = {
 
-    PulseConfig.range_config = List(
-      RangeConfig("15m", List("1m", "5m")),
-      RangeConfig("1h", List("5m", "15m")),
-      RangeConfig("1d", List("2h", "4h"))
+    PulseConfig.scales = List(
+      ScaleConfig("15m", List("1m", "5m")),
+      ScaleConfig("1h", List("5m", "15m")),
+      ScaleConfig("1d", List("2h", "4h"))
     )
-    PulseConfig.range_list = List("1m", "15m", "1h")
-    PulseConfig.shift_config = List("m", "h", "w")
+    PulseConfig.ranges = List("1m", "15m", "1h")
+    PulseConfig.shifts = List("m", "h", "w")
 
     val rangeValidator = new RangeValidator
     val aggregationValidator = new AggregationValidator

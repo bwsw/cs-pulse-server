@@ -1,13 +1,13 @@
-package com.bwsw.pulse.controllers
+package com.bwsw.cloudstack.pulse.controllers
 
-import com.bwsw.pulse.config.PulseConfig
-import com.bwsw.pulse.models._
-import com.bwsw.pulse.validators._
+import com.bwsw.cloudstack.pulse.config.PulseConfig
+import com.bwsw.cloudstack.pulse.models._
+import com.bwsw.cloudstack.pulse.validators._
 import org.influxdb.dto.QueryResult
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatra._
 import org.scalatra.json.JacksonJsonSupport
-import com.bwsw.pulse.views._
+import com.bwsw.cloudstack.pulse.views._
 import org.scalatra
 import org.slf4j.{Logger, LoggerFactory}
 
@@ -101,7 +101,7 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   get("/permitted-intervals") {
     logger.debug(s"Permitted intervals")
 
-    PermittedIntervals(PulseConfig.shift_config, PulseConfig.range_config)
+    PermittedIntervals(PulseConfig.shifts, PulseConfig.scales)
   }
 
   notFound {

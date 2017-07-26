@@ -1,4 +1,4 @@
-package com.bwsw.pulse.validators
+package com.bwsw.cloudstack.pulse.validators
 
 
 class TimeFormatValidator(validator: Validator) extends ValidationDecorator(validator) {

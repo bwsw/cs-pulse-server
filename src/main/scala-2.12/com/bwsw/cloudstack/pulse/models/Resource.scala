@@ -1,6 +1,6 @@
-package com.bwsw.pulse.models
+package com.bwsw.cloudstack.pulse.models
 
-import com.bwsw.pulse.influx.InfluxUtil
+import com.bwsw.cloudstack.pulse.influx.InfluxUtil
 import org.influxdb.dto.QueryResult
 
 object Resource {

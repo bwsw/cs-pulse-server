@@ -1,7 +1,8 @@
-package com.bwsw.pulse.influx
+package com.bwsw.cloudstack.pulse.influx
 
 import org.influxdb._
 import org.influxdb.dto._
+import org.slf4j.LoggerFactory
 
 
 /**
@@ -12,12 +13,12 @@ import org.influxdb.dto._
   */
 
 object InfluxUtil {
-  var influxDB: InfluxDB = _
-  var dbName: String = _
+  private var influxDB: InfluxDB = _
+  private var dbName: String = _
+  private val logger = LoggerFactory.getLogger(this.getClass)
 
-  def createConnection(host: String, port: String, username: String, password: String, database: String): Unit = {
-    val connUrl = "http://" + host + ":" + port
-    this.influxDB = InfluxDBFactory.connect(connUrl, username, password)
+  def createConnection(serverUrl: String, username: String, password: String, database: String): Unit = {
+    this.influxDB = InfluxDBFactory.connect(serverUrl, username, password)
     this.dbName = database
   }
 
@@ -27,7 +28,7 @@ object InfluxUtil {
     } catch {
       case re: RuntimeException =>
         val error = new QueryResult
-        error.setError("Influx connection exception.")
+        error.setError("Influx Exception Occured.")
         error
     }
   }

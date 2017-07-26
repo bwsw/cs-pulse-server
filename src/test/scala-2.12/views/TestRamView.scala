@@ -2,7 +2,7 @@ package views
 
 import java.util
 
-import com.bwsw.pulse.views.{RamViewFabric, RamViewMeta}
+import com.bwsw.cloudstack.pulse.views.{RamViewFabric, RamViewMeta}
 import org.influxdb.dto.QueryResult
 import org.junit.{Assert, Before, Test}
 
