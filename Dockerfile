@@ -11,7 +11,7 @@ ENV INFLUX_HOST=localhost \
     NGINX_RATE_LIMIT=20r/s \
     DEBUG=false \
 
-    version=1.0-SNAPSHOT \
+    version=1.0.1-SNAPSHOT \
     scala_version=2.12 \
     jetty_version=9.4.6.v20170531
 

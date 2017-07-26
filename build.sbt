@@ -1,6 +1,6 @@
 name := "cs-pulse-server"
 
-version := "1.0-SNAPSHOT"
+version := "1.0.1-SNAPSHOT"
 
 scalaVersion := "2.12.2"
 
@@ -63,6 +63,5 @@ libraryDependencies += "org.mockito" % "mockito-all" % "1.10.19"
 libraryDependencies += "com.typesafe" % "config" % "1.3.1"
 
 libraryDependencies += "com.novocode" % "junit-interface" % "0.8" % "test->default"
-
 
 enablePlugins(WarPlugin)
