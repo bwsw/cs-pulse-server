@@ -86,7 +86,7 @@ class Ram extends Resource {
 }
 
 class Disk extends Resource {
-  val counters = List("readBytes", "writeBytes", "readIOPS", "writeIOPS", "ioErrors")
+  val counters = List("ioErrors", "readBytes", "writeBytes", "readIOPS", "writeIOPS")
   override def prepareQuery(params: Map[String, String]): String = {
 
     val whereParams =
@@ -103,7 +103,7 @@ class Disk extends Resource {
 
 
 class Network extends Resource {
-  val counters = List("readBytes", "writeBytes", "readDrops", "writeDrops", "readErrors", "writeErrors", "readPackets", "writePackets")
+  val counters = List("readBytes", "writeBytes", "readErrors", "writeErrors", "readDrops", "writeDrops", "readPackets", "writePackets")
   override def prepareQuery(params: Map[String, String]): String = {
 
     val whereParams =

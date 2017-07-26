@@ -43,11 +43,11 @@ class DiskViewFabric extends ViewFabric {
     val series = get_series(sourceData)
     series.getValues.forEach(v => data.append(
       DiskViewData(
-        getValue(v, 1),
-        getValue(v, 2),
-        getValue(v, 3),
-        getValue(v, 4),
-        getValue(v, 5))))
+        ioErrors = getValue(v, 1),
+        readBytes = getValue(v, 2),
+        writeBytes = getValue(v, 3),
+        readIOPS = getValue(v, 4),
+        writeIOPS = getValue(v, 5))))
 
     DiskViewMeta(
       uuid = params("uuid"),

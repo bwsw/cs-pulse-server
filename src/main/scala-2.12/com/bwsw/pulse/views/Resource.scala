@@ -16,6 +16,7 @@ case class RamViewMeta(measurement: String = "ram",
                        aggregation: String,
                        shift: String,
                        result: scala.collection.mutable.ArrayBuffer[RamViewData]) extends View
+
 case class RamViewData(rss: String) extends View
 
 
@@ -26,6 +27,7 @@ case class DiskViewMeta(measurement: String = "disk",
                         shift: String,
                         diskUuid: String,
                         result: scala.collection.mutable.ArrayBuffer[DiskViewData]) extends View
+
 case class DiskViewData(ioErrors: String,
                         readBytes: String,
                         writeBytes: String,
@@ -40,6 +42,7 @@ case class NetworkViewMeta(measurement: String = "network",
                            shift: String,
                            mac: String,
                            result: scala.collection.mutable.ArrayBuffer[NetworkViewData]) extends View
+
 case class NetworkViewData(readBytes: String,
                            writeBytes: String,
                            readErrors: String,
