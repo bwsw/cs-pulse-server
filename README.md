@@ -52,7 +52,7 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
     -e INFLUX_PASSWORD=secret \
     -e INFLUX_DB=puls \
     -e NGINX_CACHE_TIME=15s \
-    -e NGINX_RATE_LIMIT=20r/s \
+    -e NGINX_RATE_LIMIT=20r\/s \
     -v /path/to/app.conf:/etc/pulse/application.conf \
     -p 80:9090 bwsw/cs-pulse-server
 ```
