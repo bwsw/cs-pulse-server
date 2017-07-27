@@ -1,13 +1,13 @@
 package com.bwsw.cloudstack.pulse.views
 
-import com.bwsw.cloudstack.pulse.models.InfluxTable
+import com.bwsw.cloudstack.pulse.models.InfluxModel
 import org.influxdb.dto.QueryResult
 
 import scala.collection.JavaConverters._
 import scala.util.{Success, Try}
 
 
-abstract class MetricsViewFabric(table: InfluxTable) extends ViewFabric {
+abstract class MetricsViewFabric(table: InfluxModel) extends ViewFabric {
   def getTable = table
 
   def transformToMap(sourceData: QueryResult): Seq[Map[String, String]] = {
@@ -30,7 +30,7 @@ abstract class MetricsViewFabric(table: InfluxTable) extends ViewFabric {
   }
 }
 
-class CpuViewFabric(table: InfluxTable) extends MetricsViewFabric(table) {
+class CpuViewFabric(table: InfluxModel) extends MetricsViewFabric(table) {
   override def prepareMetricsView(sourceData: QueryResult, params: Map[String, String]): CpuViewMeta = {
 
     CpuViewMeta(
@@ -43,7 +43,7 @@ class CpuViewFabric(table: InfluxTable) extends MetricsViewFabric(table) {
 }
 
 
-class RamViewFabric(table: InfluxTable) extends MetricsViewFabric(table) {
+class RamViewFabric(table: InfluxModel) extends MetricsViewFabric(table) {
   override def prepareMetricsView(sourceData: QueryResult, params: Map[String, String]): RamViewMeta = {
     RamViewMeta(
       uuid = params("uuid"),
@@ -55,7 +55,7 @@ class RamViewFabric(table: InfluxTable) extends MetricsViewFabric(table) {
 }
 
 
-class DiskViewFabric(table: InfluxTable) extends MetricsViewFabric(table) {
+class DiskViewFabric(table: InfluxModel) extends MetricsViewFabric(table) {
   override def prepareMetricsView(sourceData: QueryResult, params: Map[String, String]): DiskViewMeta = {
     DiskViewMeta(
       uuid = params("uuid"),
@@ -68,7 +68,7 @@ class DiskViewFabric(table: InfluxTable) extends MetricsViewFabric(table) {
 }
 
 
-class NetworkViewFabric(table: InfluxTable) extends MetricsViewFabric(table) {
+class NetworkViewFabric(table: InfluxModel) extends MetricsViewFabric(table) {
   override def prepareMetricsView(sourceData: QueryResult, params: Map[String, String]): NetworkViewMeta = {
     NetworkViewMeta(
       uuid = params("uuid"),

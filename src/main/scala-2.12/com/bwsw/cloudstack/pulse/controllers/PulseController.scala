@@ -53,10 +53,10 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
     aggregationValidator, shiftValidator))
 
 
-  private val cpuView = new CpuViewFabric(new CpuInfluxTable)
-  private val ramView = new RamViewFabric(new RAMInfluxTable)
+  private val cpuView = new CpuViewFabric(new CpuInfluxModel)
+  private val ramView = new RamViewFabric(new RAMInfluxModel)
   private val diskView = new DiskViewFabric(new DiskInfluxTable)
-  private val networkView = new NetworkViewFabric(new NetworkInfluxTable)
+  private val networkView = new NetworkViewFabric(new NetworkInfluxModel)
 
   before() {
     contentType = formats("json")

@@ -4,7 +4,7 @@ package models
 import java.util
 
 import com.bwsw.cloudstack.pulse.influx.InfluxService
-import com.bwsw.cloudstack.pulse.models.CpuInfluxTable
+import com.bwsw.cloudstack.pulse.models.CpuInfluxModel
 import org.influxdb.InfluxDB
 import org.influxdb.dto._
 import org.mockito.Mockito
