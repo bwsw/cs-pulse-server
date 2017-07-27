@@ -4,7 +4,10 @@ object CounterField {
   def apply(name: String, aggregation: String, modifier: String = "") = new CounterField(name, aggregation, modifier)
 }
 
-class CounterField(name: String, aggregation: String, modifier: String) {
+
+
+
+class CounterField(name: String, aggregation: String, modifier: String) extends Field {
   private def transformAggregationToSeconds(value: String) = {
     val Pattern = "([0-9]+)([mhd])".r
     value match {

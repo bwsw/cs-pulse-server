@@ -61,8 +61,8 @@ class WhereExpr(select: Select) extends Expr {
 
 class Select extends Expr {
   private val fieldExpressions = mutable.Map[String, String]()
-  def field(asName: String, formula: String): Select = {
-    fieldExpressions(asName) = formula
+  def field(asName: String, fieldExpr: Field): Select = {
+    fieldExpressions(asName) = fieldExpr.toString
     this
   }
 
@@ -83,17 +83,4 @@ class Select extends Expr {
     s""" FROM "$tableExpression" """ +
     where.build
   }
-}
-
-object Test {
-  var q = QueryBuilder()
-    .select
-      .field("cpuTime","")
-      .from("cputime")
-      .where
-      .timeSpan("1d","1h","0h")
-      .andEq("vmUuid","")
-      .groupByAggregation
-      .build
-
 }

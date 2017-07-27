@@ -13,7 +13,9 @@ abstract class MetricsViewFabric(table: InfluxTable) extends ViewFabric {
     val cols = getSeries(sourceData).getColumns.asScala
     getSeries(sourceData).getValues.asScala
       .map {
-        value => (0 until cols.size).map(index => cols(index) -> getValue(value, index)).toMap
+        value => (0 until cols.size)
+          .filter(cols(_) != "time")
+          .map(index => cols(index) -> Math.round(getValue(value, index).toFloat).toString).toMap
       }
   }
 }

@@ -246,8 +246,8 @@ http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/08:ED:B9:
     result: 
     [
         {
-            readBytes: 354920233,
-            writeBytes: 233636521,
+            readBits: 354920233,
+            writeBits: 233636521,
             readErrors: 0,
             writeErrors: 0,
             readDrops: 0,
@@ -256,8 +256,8 @@ http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/08:ED:B9:
             writePackets: 797443
         },
         {
-            readBytes: 17842072,
-            writeBytes: 15747525,
+            readBits: 17842072,
+            writeBits: 15747525,
             readErrors: 0,
             writeErrors: 0,
             readDrops: 0,
