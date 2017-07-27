@@ -51,7 +51,8 @@ class WhereExpr(select: Select) extends Expr {
   }
 
   def build = {
-    andEqExpressions.map(kv => QuotedField(kv._1) + " = " + QuotedValue(kv._2)).mkString(" AND ") +
+    "WHERE " +
+      andEqExpressions.map(kv => QuotedField(kv._1) + " = " + QuotedValue(kv._2)).mkString(" AND ") +
       " AND time > now() - " + _range + " - " + _shift + " AND time < now() - " + _shift +
       " GROUP BY time(" + _aggregation + ")"
   }
