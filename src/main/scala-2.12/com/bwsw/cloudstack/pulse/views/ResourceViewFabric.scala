@@ -4,6 +4,7 @@ import com.bwsw.cloudstack.pulse.models.InfluxTable
 import org.influxdb.dto.QueryResult
 
 import scala.collection.JavaConverters._
+import scala.util.{Success, Try}
 
 
 abstract class MetricsViewFabric(table: InfluxTable) extends ViewFabric {
@@ -15,10 +16,15 @@ abstract class MetricsViewFabric(table: InfluxTable) extends ViewFabric {
       .map {
         value => (0 until cols.size)
           .map(index => cols(index) -> {
-              if(cols(index) != "time")
-                Math.round(getValue(value, index).toFloat).toString
+            val v = getValue(value, index)
+              if(cols(index) != "time") {
+                Try(Math.round(v.toFloat).toString) match {
+                  case Success(res) => res
+                  case _ => v
+                }
+              }
               else
-                getValue(value, index)
+                v
           }).toMap
       }
   }
