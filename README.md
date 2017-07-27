@@ -7,7 +7,7 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 
 1. CPU time, query param /cputime/uuid/range/aggregation/shift
 * uuid - host uuid
-* range - Data output period - 15m, 30m, 1h, 2h, 4h, 12h, 1d, 1w, 1m
+* range - Data output period - 15m, 30m, 1h, 2h, 4h, 12h, 1d, 1w, 1month
 * shift - 0+ which means N-fold shift in current  range
 * aggregation - 1m, 5m, 15m, 1h (aggregation must be less then range), example: range=15m, aggregation=5m, in result we have 3 values for needed data.
  Can have only one parameter which is gotten from a sensor
@@ -42,15 +42,75 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 ```
 # docker pull bwsw/cs-pulse-server
 # docker run --restart=always -d --name pulse-server \
-    -e INFLUX_HOST localhost \
-    -e INFLUX_PORT 8086 \
-    -e INFLUX_USER puls \
-    -e INFLUX_PASSWORD secret \
-    -e INFLUX_DB puls \
-    -e NGINX_CACHE_TIME 15s \
-    -e NGINX_RATE_LIMIT 20r/s \
+    -e INFLUX_URL=http://localhost:8086/ \
+    -e INFLUX_USER=puls \
+    -e INFLUX_PASSWORD=secret \
+    -e INFLUX_DB=puls \
+    -e NGINX_CACHE_TIME=15s \
+    -e NGINX_RATE_LIMIT=20r\/s \
     -v /path/to/app.conf:/etc/pulse/application.conf \
     -p 80:9090 bwsw/cs-pulse-server
+```
+### Config example:
+```
+pulse_config {
+  influx {
+    url =  "http://localhost:8086"
+    url = ${?INFLUX_URL}
+
+    username = "username"
+    username = ${?INFLUX_USER}
+
+    password = "password"
+    password = ${?INFLUX_PASSWORD}
+
+    database = "database"
+    database = ${?INFLUX_DB}
+  }
+  scales = [
+    {
+      range = "15m"
+      aggregation = ["1m", "5m"]
+    }
+    {
+      range = "30m"
+      aggregation = ["1m", "5m", "15m"]
+    }
+    {
+      range = "1h"
+      aggregation = ["1m", "5m", "15m"]
+    }
+    {
+      range = "2h"
+      aggregation = ["5m", "15m", "30m"]
+    }
+    {
+      range = "4h"
+      aggregation = ["5m", "15m", "30m", "1h"]
+    }
+    {
+      range = "12h"
+      aggregation = ["15m", "30m", "1h"]
+    }
+    {
+      range = "1d"
+      aggregation = ["30m", "1h"]
+    }
+    {
+      range = "1w"
+      aggregation = ["1h", "4h"]
+    }
+    {
+      range = "30d"
+      aggregation = ["4h", "1d"]
+    }
+    {
+      range = "3h"
+      aggregation = ["4m", "6m"]
+    }
+  ]
+  shifts = ["m", "h", "d"]
+}
 ```
 
 ### Data json format:
@@ -88,7 +148,7 @@ https://github.com/bwsw/cs-pulse-server/wiki/Design
 ``` 
 http://hostname/cputime/550e8400-e29b-41d4-a716-446655440000/1d/1h/1w
 ```
-##### Cpu response:
+##### Cpu response (percents):
 ```
 {
     measurement: cputime,
@@ -115,7 +175,7 @@ http://hostname/cputime/550e8400-e29b-41d4-a716-446655440000/1d/1h/1w
 ```
 http://hostname/ram/550e8400-e29b-41d4-a716-446655440000/15m/1m/1d
 ```
-##### Ram response:
+##### Ram response (MB):
 ```
 {
     measurement: ram,
@@ -126,13 +186,13 @@ http://hostname/ram/550e8400-e29b-41d4-a716-446655440000/15m/1m/1d
     result: 
     [
         {
-            rss: 3.5
+            ram: 3500
         },
         {
-            rss: 3.3
+            ram: 3300
         },
         {
-            rss: 3.6
+            ram: 3600
         }
     ]
 }
@@ -186,8 +246,8 @@ http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/08:ED:B9:
     result: 
     [
         {
-            readBytes: 354920233,
-            writeBytes: 233636521,
+            readBits: 354920233,
+            writeBits: 233636521,
             readErrors: 0,
             writeErrors: 0,
             readDrops: 0,
@@ -196,8 +256,8 @@ http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/08:ED:B9:
             writePackets: 797443
         },
         {
-            readBytes: 17842072,
-            writeBytes: 15747525,
+            readBits: 17842072,
+            writeBits: 15747525,
             readErrors: 0,
             writeErrors: 0,
             readDrops: 0,
@@ -206,23 +266,6 @@ http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/08:ED:B9:
             writePackets: 58346
         }
     ]
-}
-```
-
-
-```
-{
-shift: ["m", "h", "d"],
-aggregations_allowed: [
-    {
-        range: "15m",
-        aggregation: ["1m", "5m"]
-    },
-    {
-        range: "30m",
-        aggregation: ["1m", "5m", "15m"]
-    }
-  ]
 }
 ```
 

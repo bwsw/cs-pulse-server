@@ -1,6 +1,6 @@
 name := "cs-pulse-server"
 
-version := "1.0-SNAPSHOT"
+version := "1.0.3.1-SNAPSHOT"
 
 scalaVersion := "2.12.2"
 
@@ -57,12 +57,11 @@ libraryDependencies += "org.eclipse.jetty" % "jetty-server" % "9.4.5.v20170502"
 libraryDependencies += "org.eclipse.jetty" % "jetty-servlet" % "9.4.5.v20170502"
 libraryDependencies += "org.eclipse.jetty" % "jetty-webapp" % "9.4.5.v20170502"
 libraryDependencies += "org.scalatra" %% "scalatra-specs2" % "2.5.0" % "test"
-libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.7" % "runtime"
-libraryDependencies += "junit" % "junit" % "4.4"
 libraryDependencies += "org.mockito" % "mockito-all" % "1.10.19"
 libraryDependencies += "com.typesafe" % "config" % "1.3.1"
-
-libraryDependencies += "com.novocode" % "junit-interface" % "0.8" % "test->default"
-
+libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.24"
+libraryDependencies += "org.slf4j" % "slf4j-log4j12" % "1.7.24"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
+libraryDependencies += "org.scalamock" %% "scalamock-scalatest-support" % "3.5.0" % "test"
 
 enablePlugins(WarPlugin)
