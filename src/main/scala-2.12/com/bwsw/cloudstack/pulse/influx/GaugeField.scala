@@ -5,6 +5,6 @@ object GaugeField {
 }
 class GaugeField(name: String, modifier: String) {
   override def toString(): String = {
-    s"""MEAN("$name")$modifier AS "$name""""
+    s"""MEAN("$name")$modifier"""
   }
 }

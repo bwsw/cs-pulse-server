@@ -37,17 +37,12 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 - [x] &nbsp; Configurable nginx cache time (in seconds) for repeatable requests, default 10 seconds
 - [x] &nbsp; Set what kind of aggregation can there be for each range.
 
-#### Roadmap:
-
-- use Telegraf(TICK stack) as middle layer between server and database.
-
 
 ### Usage:
 ```
 # docker pull bwsw/cs-pulse-server
 # docker run --restart=always -d --name pulse-server \
-    -e INFLUX_HOST=localhost \
-    -e INFLUX_PORT=8086 \
+    -e INFLUX_URL=http://localhost:8086/ \
     -e INFLUX_USER=puls \
     -e INFLUX_PASSWORD=secret \
     -e INFLUX_DB=puls \
@@ -60,11 +55,8 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 ```
 pulse_config {
   influx {
-    host =  "localhost"
-    host = ${?INFLUX_HOST}
-
-    port = "8086"
-    port = ${?INFLUX_PORT}
+    url =  "http://localhost:8086"
+    url = ${?INFLUX_URL}
 
     username = "username"
     username = ${?INFLUX_USER}
@@ -75,7 +67,7 @@ pulse_config {
     database = "database"
     database = ${?INFLUX_DB}
   }
-  aggregations_allowed = [
+  scales = [
     {
       range = "15m"
       aggregation = ["1m", "5m"]
@@ -117,7 +109,7 @@ pulse_config {
       aggregation = ["4m", "6m"]
     }
   ]
-  shift = ["m", "h", "d"]
+  shifts = ["m", "h", "d"]
 }
 ```
 

@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory
 object InfluxService {
   private var influxDB: InfluxDB = _
   private var dbName: String = _
+  private val logger = LoggerFactory.getLogger(this.getClass)
 
   def connect(serverUrl: String, username: String, password: String, database: String): Unit = {
     this.influxDB = InfluxDBFactory.connect(serverUrl, username, password)
@@ -26,8 +27,9 @@ object InfluxService {
       influxDB.query(new Query(query, dbName))
     } catch {
       case re: RuntimeException =>
+        re.printStackTrace()
         val error = new QueryResult
-        error.setError("Influx Exception Occured.")
+        error.setError("Influx Exception Occurred.")
         error
     }
   }
