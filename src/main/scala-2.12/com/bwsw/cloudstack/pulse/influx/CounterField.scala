@@ -2,14 +2,8 @@ package com.bwsw.cloudstack.pulse.influx
 
 object CounterField {
   def apply(name: String, aggregation: String, modifier: String = "") = new CounterField(name, aggregation, modifier)
-}
-
-
-
-
-class CounterField(name: String, aggregation: String, modifier: String) extends Field {
-  private def transformAggregationToSeconds(value: String) = {
-    val Pattern = "([0-9]+)([mhd])".r
+  private[pulse] def transformAggregationToSeconds(value: String) = {
+    val Pattern = "^([0-9]+)([mhd])$".r
     value match {
       case Pattern(number, scale) => scale match {
         case "d" => number.toInt * 3600 * 24
@@ -18,8 +12,11 @@ class CounterField(name: String, aggregation: String, modifier: String) extends 
       }
     }
   }
+}
 
-  val aggregationSeconds = transformAggregationToSeconds(aggregation)
+class CounterField(name: String, aggregation: String, modifier: String) extends Field {
+
+  val aggregationSeconds = CounterField.transformAggregationToSeconds(aggregation)
 
   override def toString() = {
     s"""NON_NEGATIVE_DERIVATIVE(MEAN("$name"), """ + aggregation + s")$modifier / "  + aggregationSeconds

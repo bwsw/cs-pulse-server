@@ -35,7 +35,7 @@ class PulseConfig(configPath: String) {
 
   require(Files.exists(Paths.get(configPath)))
 
-  private val config = ConfigFactory.parseFile(new File(configPath))
+  private val config = ConfigFactory.parseFile(new File(configPath)).resolve()
 
   private val aggregationsScope = "pulse_config.scales"
   private val influxScope = "pulse_config.influx"
@@ -49,10 +49,10 @@ class PulseConfig(configPath: String) {
     InfluxConnectionConfig(scope.getString("url"), scope.getString("username"), scope.getString("password"), scope.getString("database"))
   }
 
-  private def getScales: List[ScaleConfig] = {
+  private def getScales: Map[String, ScaleConfig] = {
     val scope = config.getConfigList(aggregationsScope)
     scope.asScala
-      .map(scale => ScaleConfig(scale.getString(rangeKey), scale.getStringList(aggregationKey).asScala.toList)).toList
+      .map(scale => scale.getString(rangeKey) -> ScaleConfig(scale.getString(rangeKey), scale.getStringList(aggregationKey).asScala.toList)).toMap
   }
 
   /**
@@ -60,7 +60,7 @@ class PulseConfig(configPath: String) {
     */
   def scales = getScales
 
-  def ranges = scales.map(cfg => cfg.range)
+  def ranges = scales.map(cfg => cfg._1).toList.sorted
 
   def shifts = config.getStringList(shiftKey).asScala.toList
 
