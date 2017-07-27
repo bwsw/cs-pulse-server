@@ -5,7 +5,7 @@ import com.bwsw.cloudstack.pulse.influx.{CounterField, GaugeField, QueryBuilder}
 /**
   * Created by Ivan Kudryavtsev on 27.07.17.
   */
-class CpuInfluxModel extends InfluxModel {
+class CPUInfluxModel extends InfluxModel {
   override def prepareQuery(params: Map[String, String]): String = {
     val aggregation = params("aggregation")
     val shift = params("shift")
