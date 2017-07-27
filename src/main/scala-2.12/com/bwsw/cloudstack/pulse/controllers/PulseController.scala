@@ -18,14 +18,14 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
 
   private val logger =  LoggerFactory.getLogger(getClass)
 
-  def createResourceView(viewFabric: MetricsViewFabric, params: scalatra.Params): ActionResult = {
+  def createResourceView(viewFabric: MetricsViewBuilder, params: scalatra.Params): ActionResult = {
     val queryResult = viewFabric.getTable.getResult(params)
     val viewResult = viewFabric.prepareView(queryResult, params)
     if (viewResult._1) Ok(viewResult._2)
     else InternalServerError(viewResult._2)
   }
 
-  def handle(view: MetricsViewFabric, params: scalatra.Params, validator: Validator) = {
+  def handle(view: MetricsViewBuilder, params: scalatra.Params, validator: Validator) = {
     val (errors, isValid) = validator.validate(params)
 
     isValid match {
@@ -53,10 +53,10 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
     aggregationValidator, shiftValidator))
 
 
-  private val cpuView = new CpuViewFabric(new CPUInfluxModel)
-  private val ramView = new RamViewFabric(new RAMInfluxModel)
-  private val diskView = new DiskViewFabric(new DiskInfluxModel)
-  private val networkView = new NetworkViewFabric(new NetworkInfluxModel)
+  private val cpuView = new CpuViewBuilder(new CPUInfluxModel)
+  private val ramView = new RamViewBuilder(new RAMInfluxModel)
+  private val diskView = new DiskViewBuilder(new DiskInfluxModel)
+  private val networkView = new NetworkViewBuilder(new NetworkInfluxModel)
 
   before() {
     contentType = formats("json")

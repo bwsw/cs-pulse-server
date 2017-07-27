@@ -2,7 +2,7 @@ package views
 
 import java.util
 
-import com.bwsw.cloudstack.pulse.views.{CpuViewFabric, CpuViewMeta}
+import com.bwsw.cloudstack.pulse.views.CpuViewBuilder
 import org.influxdb.dto._
 
 import scala.collection.JavaConverters._
