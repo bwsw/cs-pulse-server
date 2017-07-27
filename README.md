@@ -144,9 +144,14 @@ https://github.com/bwsw/cs-pulse-server/wiki/Design
 
 ### Request/Response examples:
 
+##### Permitted intervals:
+```
+http://hostname/pulse/permitted-intervals 
+```
+
 ##### Cpu request:
 ``` 
-http://hostname/cputime/550e8400-e29b-41d4-a716-446655440000/1d/1h/1w
+http://hostname/pulse/cputime/550e8400-e29b-41d4-a716-446655440000/1d/1h/1w
 ```
 ##### Cpu response (percents):
 ```
@@ -173,7 +178,7 @@ http://hostname/cputime/550e8400-e29b-41d4-a716-446655440000/1d/1h/1w
 
 ##### Ram request:
 ```
-http://hostname/ram/550e8400-e29b-41d4-a716-446655440000/15m/1m/1d
+http://hostname/pulse/ram/550e8400-e29b-41d4-a716-446655440000/15m/1m/1d
 ```
 ##### Ram response (MB):
 ```
@@ -200,7 +205,7 @@ http://hostname/ram/550e8400-e29b-41d4-a716-446655440000/15m/1m/1d
 
 ##### Disk request:
 ```
-http://hostname/disk/550e8400-e29b-41d4-a716-446655440000/70dc25e9-82c6-4a8c-8d7d-3e304cced576/1h/15m/0s
+http://hostname/pulse/disk/550e8400-e29b-41d4-a716-446655440000/70dc25e9-82c6-4a8c-8d7d-3e304cced576/1h/15m/0s
 ```
 ##### Disk response:
 ```
@@ -232,7 +237,7 @@ http://hostname/disk/550e8400-e29b-41d4-a716-446655440000/70dc25e9-82c6-4a8c-8d7
 ```
 ##### Network request:
 ```
-http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/08:ED:B9:49:B2:E5/1h/15m/0s
+http://hostname/pulse/network-interface/550e8400-e29b-41d4-a716-446655440000/08:ED:B9:49:B2:E5/1h/15m/0s
 ```
 ##### Network response: 
 ```
