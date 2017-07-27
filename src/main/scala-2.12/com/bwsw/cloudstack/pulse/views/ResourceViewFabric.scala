@@ -79,3 +79,4 @@ class NetworkViewFabric(table: InfluxTable) extends MetricsViewFabric(table) {
       result = transformToMap(sourceData))
   }
 }
+
