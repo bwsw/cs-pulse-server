@@ -2,8 +2,7 @@ FROM openjdk:8
 
 LABEL MAINTAINER Bitworks Software info@bitworks.software
 
-ENV INFLUX_HOST=localhost \
-    INFLUX_PORT=8086 \
+ENV INFLUX_URL=http://localhost:8086/ \
     INFLUX_USER=puls \
     INFLUX_PASSWORD=puls \
     INFLUX_DB=secret \
