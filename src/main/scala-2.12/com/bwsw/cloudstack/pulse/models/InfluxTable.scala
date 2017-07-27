@@ -12,7 +12,7 @@ object InfluxTable {
 abstract class InfluxTable {
   def getResult(params: Map[String, String]): QueryResult = {
     val query: String = prepareQuery(params)
-    InfluxTable.logger.info(query)
+    InfluxTable.logger.info(s"Influx Query: `$query'")
     InfluxService.query(query)
   }
 
