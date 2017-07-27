@@ -1,87 +1,69 @@
 package com.bwsw.cloudstack.pulse.views
 
+import com.bwsw.cloudstack.pulse.models.InfluxTable
 import org.influxdb.dto.QueryResult
-import scala.collection.mutable
+
+import scala.collection.JavaConverters._
 
 
-class CpuViewFabric extends ViewFabric {
-  override def prepareSpecView(sourceData: QueryResult, params: Map[String, String]): CpuViewMeta = {
-    val data: mutable.ArrayBuffer[CpuViewData] = mutable.ArrayBuffer()
+abstract class MetricsViewFabric(table: InfluxTable) extends ViewFabric {
+  def getTable = table
 
-    val series = get_series(sourceData)
-    series.getValues.forEach(v => data.append(CpuViewData(getValue(v, 1))))
+  def transformToMap(sourceData: QueryResult): Seq[Map[String, String]] = {
+    val cols = getSeries(sourceData).getColumns.asScala
+    getSeries(sourceData).getValues.asScala
+      .map {
+        value => (0 until cols.size).map(index => cols(index) -> getValue(value, index)).toMap
+      }
+  }
+}
+
+class CpuViewFabric(table: InfluxTable) extends MetricsViewFabric(table) {
+  override def prepareMetricsView(sourceData: QueryResult, params: Map[String, String]): CpuViewMeta = {
+
     CpuViewMeta(
       uuid = params("uuid"),
       range = params("range"),
       aggregation = params("aggregation"),
       shift = params("shift"),
-      result = data)
+      result = transformToMap(sourceData))
   }
 }
 
 
-class RamViewFabric extends ViewFabric {
-  override def prepareSpecView(sourceData: QueryResult, params: Map[String, String]): RamViewMeta = {
-    val data: mutable.ArrayBuffer[RamViewData] = mutable.ArrayBuffer()
-
-    val series = get_series(sourceData)
-    series.getValues.forEach(v => data.append(RamViewData(getValue(v, 1))))
+class RamViewFabric(table: InfluxTable) extends MetricsViewFabric(table) {
+  override def prepareMetricsView(sourceData: QueryResult, params: Map[String, String]): RamViewMeta = {
     RamViewMeta(
       uuid = params("uuid"),
       range = params("range"),
       aggregation = params("aggregation"),
       shift = params("shift"),
-      result = data)
+      result = transformToMap(sourceData))
   }
 }
 
 
-class DiskViewFabric extends ViewFabric {
-  override def prepareSpecView(sourceData: QueryResult, params: Map[String, String]): DiskViewMeta = {
-    val data: mutable.ArrayBuffer[DiskViewData] = mutable.ArrayBuffer()
-
-    val series = get_series(sourceData)
-    series.getValues.forEach(v => data.append(
-      DiskViewData(
-        ioErrors = getValue(v, 1),
-        readBytes = getValue(v, 2),
-        writeBytes = getValue(v, 3),
-        readIOPS = getValue(v, 4),
-        writeIOPS = getValue(v, 5))))
-
+class DiskViewFabric(table: InfluxTable) extends MetricsViewFabric(table) {
+  override def prepareMetricsView(sourceData: QueryResult, params: Map[String, String]): DiskViewMeta = {
     DiskViewMeta(
       uuid = params("uuid"),
       range = params("range"),
       aggregation = params("aggregation"),
       shift = params("shift"),
       diskUuid = params("diskUuid"),
-      result = data)
+      result = transformToMap(sourceData))
   }
 }
 
 
-class NetworkViewFabric extends ViewFabric {
-  override def prepareSpecView(sourceData: QueryResult, params: Map[String, String]): NetworkViewMeta = {
-    val data: mutable.ArrayBuffer[NetworkViewData] = mutable.ArrayBuffer()
-
-    val series = get_series(sourceData)
-    series.getValues.forEach(v => data.append(
-      NetworkViewData(
-        getValue(v, 1),
-        getValue(v, 2),
-        getValue(v, 3),
-        getValue(v, 4),
-        getValue(v, 5),
-        getValue(v, 6),
-        getValue(v, 7),
-        getValue(v, 8))))
-
+class NetworkViewFabric(table: InfluxTable) extends MetricsViewFabric(table) {
+  override def prepareMetricsView(sourceData: QueryResult, params: Map[String, String]): NetworkViewMeta = {
     NetworkViewMeta(
       uuid = params("uuid"),
       range = params("range"),
       aggregation = params("aggregation"),
       shift = params("shift"),
       mac = params("mac"),
-      result = data)
+      result = transformToMap(sourceData))
   }
 }

@@ -5,7 +5,7 @@ import java.util
 
 import com.bwsw.cloudstack.pulse.config.{PulseConfig, ScaleConfig}
 import com.bwsw.cloudstack.pulse.controllers.PulseController
-import com.bwsw.cloudstack.pulse.influx.InfluxUtil
+import com.bwsw.cloudstack.pulse.influx.InfluxService
 import org.influxdb.InfluxDB
 import org.influxdb.dto.{Query, QueryResult}
 import org.scalatra.test.specs2._
@@ -68,8 +68,8 @@ class TestNetworkController extends MutableScalatraSpec{
   Mockito.when(mockInfluxDB.query(query)).thenReturn(queryResult)
 
 
-  InfluxUtil.influxDB = mockInfluxDB
-  InfluxUtil.dbName = database
+  InfluxService.influxDB = mockInfluxDB
+  InfluxService.dbName = database
 
   addServlet(classOf[PulseController], "/*")
 

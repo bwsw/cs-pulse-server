@@ -3,110 +3,98 @@ package com.bwsw.cloudstack.pulse.controllers
 import com.bwsw.cloudstack.pulse.config.PulseConfig
 import com.bwsw.cloudstack.pulse.models._
 import com.bwsw.cloudstack.pulse.validators._
-import org.influxdb.dto.QueryResult
-import org.json4s.{DefaultFormats, Formats}
+import com.bwsw.cloudstack.pulse.views._
+import org.json4s.DefaultFormats
+import org.scalatra
 import org.scalatra._
 import org.scalatra.json.JacksonJsonSupport
-import com.bwsw.cloudstack.pulse.views._
-import org.scalatra
-import org.slf4j.{Logger, LoggerFactory}
+import org.slf4j.LoggerFactory
 
 
 class PulseController extends ScalatraServlet with JacksonJsonSupport {
 
-  protected implicit lazy val jsonFormats: Formats = DefaultFormats
-  protected val applicationDescription = "Pulse Server"
+  protected implicit lazy val jsonFormats = DefaultFormats
+  protected val applicationDescription = "CloudStack Extensions / Pulse Plugin Server"
 
-  val logger: Logger =  LoggerFactory.getLogger(getClass)
+  private val logger =  LoggerFactory.getLogger(getClass)
 
-
-  def createResourceView(concreteResource: Resource, concreteViewFabric: ViewFabric, params: scalatra.Params): ActionResult = {
-    val sourceData: QueryResult = concreteResource.getResult(params)
-    val viewResult = concreteViewFabric.prepareView(sourceData, params)
+  def createResourceView(viewFabric: MetricsViewFabric, params: scalatra.Params): ActionResult = {
+    val queryResult = viewFabric.getTable.getResult(params)
+    val viewResult = viewFabric.prepareView(queryResult, params)
     if (viewResult._1) Ok(viewResult._2)
     else InternalServerError(viewResult._2)
   }
 
-  def mainHandler(concreteResource: Resource, concreteViewFabric: ViewFabric, params: scalatra.Params, validator: Validator) = {
+  def handle(view: MetricsViewFabric, params: scalatra.Params, validator: Validator) = {
     val (errors, isValid) = validator.validate(params)
 
     isValid match {
-      case true => createResourceView(concreteResource, concreteViewFabric, params)
+      case true => createResourceView(view, params)
       case false =>
         logger.debug(errors.toString())
         BadRequest(ErrorView(params, errors))
     }
   }
 
+  private val vmValidator = new UuidValidator(new VmUuidValidator)
+  private val diskUuidValidator = new UuidValidator(new DiskValidator)
+  private val rangeValidator = new TimeFormatValidator(new RangeValidator)
+  private val aggregationValidator = new AggregationRangeValidator(new TimeFormatValidator(new AggregationValidator))
+  private val macValidator = new MacValidator
+  private val shiftValidator = new TimeFormatValidator(new ShiftValidator)
 
-  val vmValidator = new UuidValidator(new VmUuidValidator)
-  val diskUuidValidator = new UuidValidator(new DiskValidator)
-  val rangeValidator = new TimeFormatValidator(new RangeValidator)
-  val aggregationValidator = new AggregationRangeValidator(new TimeFormatValidator(new AggregationValidator))
-  val macValidator = new MacValidator
-  val shiftValidator = new TimeFormatValidator(new ShiftValidator)
-
-  val cpuValidator = new Validators(List(vmValidator, rangeValidator,
+  private val cpuValidator = new Validators(List(vmValidator, rangeValidator,
     aggregationValidator, shiftValidator))
-  val ramValidator = new Validators(List(vmValidator, rangeValidator,
+  private val ramValidator = new Validators(List(vmValidator, rangeValidator,
     aggregationValidator, shiftValidator))
-  val diskValidator = new Validators(List(vmValidator, diskUuidValidator, rangeValidator,
+  private val diskValidator = new Validators(List(vmValidator, diskUuidValidator, rangeValidator,
     aggregationValidator, shiftValidator))
-  val networkValidator = new Validators(List(vmValidator, macValidator, rangeValidator,
+  private val networkValidator = new Validators(List(vmValidator, macValidator, rangeValidator,
     aggregationValidator, shiftValidator))
 
 
-  val cpu: Resource = new Cpu
-  val cpuView: ViewFabric = new CpuViewFabric
-
-  val ram: Resource = new Ram
-  val ramView: ViewFabric = new RamViewFabric
-
-  val disk: Resource = new Disk
-  val diskView: ViewFabric = new DiskViewFabric
-
-  val network: Resource = new Network
-  val networkView: ViewFabric = new NetworkViewFabric
-
-
+  private val cpuView = new CpuViewFabric(new CpuInfluxTable)
+  private val ramView = new RamViewFabric(new RAMInfluxTable)
+  private val diskView = new DiskViewFabric(new DiskInfluxTable)
+  private val networkView = new NetworkViewFabric(new NetworkInfluxTable)
 
   before() {
     contentType = formats("json")
   }
 
   get("/cputime/:uuid/:range/:aggregation/:shift") {
-    logger.debug(s"Cpu time: $params")
+    logger.debug(s"Cpu Time Request Parameters: $params")
 
-    mainHandler(cpu, cpuView, params, cpuValidator)
+    handle(cpuView, params, cpuValidator)
   }
 
   get("/ram/:uuid/:range/:aggregation/:shift") {
-    logger.debug(s"Ram: $params")
+    logger.debug(s"Ram Request Parameters: $params")
 
-    mainHandler(ram, ramView, params, ramValidator)
+    handle(ramView, params, ramValidator)
   }
 
   get("/network-interface/:uuid/:mac/:range/:aggregation/:shift") {
-    logger.debug(s"Network: $params")
+    logger.debug(s"Network Request Parameters: $params")
 
-    mainHandler(network, networkView, params, networkValidator)
+    handle(networkView, params, networkValidator)
   }
 
   get("/disk/:uuid/:diskUuid/:range/:aggregation/:shift") {
-    logger.debug(s"Disk: $params")
+    logger.debug(s"Disk Request Parameters: $params")
 
-    mainHandler(disk, diskView, params, diskValidator)
+    handle(diskView, params, diskValidator)
   }
 
   get("/permitted-intervals") {
-    logger.debug(s"Permitted intervals")
+    logger.debug(s"Permitted Intervals Request Parameters")
 
     PermittedIntervals(PulseConfig.shifts, PulseConfig.scales)
   }
 
   notFound {
-    logger.debug(s"Page not found")
+    logger.debug(s"Requested Page Is Not Found")
 
-    NotFound(ErrorView(Map(), List("Page not found")))
+    NotFound(ErrorView(Map(), List("Page Is Not Found")))
   }
 }

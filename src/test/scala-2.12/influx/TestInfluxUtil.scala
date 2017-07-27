@@ -3,7 +3,7 @@ package influx
 import java.util
 
 import org.junit._
-import com.bwsw.cloudstack.pulse.influx.InfluxUtil
+import com.bwsw.cloudstack.pulse.influx.InfluxService
 import org.influxdb.InfluxDB
 import org.influxdb.dto._
 import org.mockito.Mockito
@@ -49,9 +49,9 @@ class TestInfluxUtil {
 
   @Test
   def testCreateConnection() = {
-    InfluxUtil.createConnection(host, port, username, password, database)
-    Assert.assertEquals(database, InfluxUtil.dbName)
-    Assert.assertEquals(InfluxUtil.influxDB.isInstanceOf[InfluxDB], true)
+    InfluxService.connect(host, port, username, password, database)
+    Assert.assertEquals(database, InfluxService.dbName)
+    Assert.assertEquals(InfluxService.influxDB.isInstanceOf[InfluxDB], true)
   }
 
   @Test
@@ -59,10 +59,10 @@ class TestInfluxUtil {
     val mockInfluxDB = Mockito.mock(classOf[InfluxDB])
     Mockito.when(mockInfluxDB.query(new Query("SELECT * FROM cpu", database))).thenReturn(queryResult)
 
-    InfluxUtil.influxDB = mockInfluxDB
-    InfluxUtil.dbName = database
+    InfluxService.influxDB = mockInfluxDB
+    InfluxService.dbName = database
 
-    val sourceData = InfluxUtil.executeQuery("SELECT * FROM cpu")
+    val sourceData = InfluxService.query("SELECT * FROM cpu")
 
     Assert.assertEquals(sourceData.getResults.get(0).getSeries.get(0).getName, "cpu")
 

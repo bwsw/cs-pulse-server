@@ -10,8 +10,10 @@ import org.eclipse.jetty.webapp.WebAppContext
 import org.scalatra.servlet.ScalatraListener
 
 object Launcher {
+  val defaultPort = 3000
+
   def main(args: Array[String]) {
-    val port = if(System.getenv("PORT") != null) System.getenv("PORT").toInt else 3000
+    val port = if(System.getenv("PORT") != null) System.getenv("PORT").toInt else defaultPort
 
     val server = new Server(port)
     val context = new WebAppContext()

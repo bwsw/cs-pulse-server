@@ -6,19 +6,14 @@ case class CpuViewMeta(measurement: String = "cputime",
                        range: String,
                        aggregation: String,
                        shift: String,
-                       result: scala.collection.mutable.ArrayBuffer[CpuViewData]) extends View
-case class CpuViewData(cpu: String) extends View
-
+                       result: Seq[Map[String, String]]) extends View
 
 case class RamViewMeta(measurement: String = "ram",
                        uuid: String,
                        range: String,
                        aggregation: String,
                        shift: String,
-                       result: scala.collection.mutable.ArrayBuffer[RamViewData]) extends View
-
-case class RamViewData(rss: String) extends View
-
+                       result: Seq[Map[String, String]]) extends View
 
 case class DiskViewMeta(measurement: String = "disk",
                         uuid: String,
@@ -26,14 +21,7 @@ case class DiskViewMeta(measurement: String = "disk",
                         aggregation: String,
                         shift: String,
                         diskUuid: String,
-                        result: scala.collection.mutable.ArrayBuffer[DiskViewData]) extends View
-
-case class DiskViewData(ioErrors: String,
-                        readBytes: String,
-                        writeBytes: String,
-                        readIOPS: String,
-                        writeIOPS: String) extends View
-
+                        result: Seq[Map[String, String]]) extends View
 
 case class NetworkViewMeta(measurement: String = "network",
                            uuid: String,
@@ -41,13 +29,5 @@ case class NetworkViewMeta(measurement: String = "network",
                            aggregation: String,
                            shift: String,
                            mac: String,
-                           result: scala.collection.mutable.ArrayBuffer[NetworkViewData]) extends View
+                           result: Seq[Map[String, String]]) extends View
 
-case class NetworkViewData(readBytes: String,
-                           writeBytes: String,
-                           readErrors: String,
-                           writeErrors: String,
-                           readDrops: String,
-                           writeDrops: String,
-                           readPackets: String,
-                           writePackets: String) extends View

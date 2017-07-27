@@ -3,8 +3,8 @@ package models
 
 import java.util
 
-import com.bwsw.cloudstack.pulse.influx.InfluxUtil
-import com.bwsw.cloudstack.pulse.models.Cpu
+import com.bwsw.cloudstack.pulse.influx.InfluxService
+import com.bwsw.cloudstack.pulse.models.CpuInfluxTable
 import org.influxdb.InfluxDB
 import org.junit._
 import org.influxdb.dto._
@@ -72,13 +72,13 @@ class TestGetResult {
 
   @Test
   def testCorrectGetResult() = {
-    val cpu = new Cpu
+    val cpu = new CpuInfluxTable
 
     val mockInfluxDB = Mockito.mock(classOf[InfluxDB])
     Mockito.when(mockInfluxDB.query(new Query(cpu.prepareQuery(cpuParams), database))).thenReturn(cpuQueryResult)
 
-    InfluxUtil.influxDB = mockInfluxDB
-    InfluxUtil.dbName = database
+    InfluxService.influxDB = mockInfluxDB
+    InfluxService.dbName = database
 
     val result: QueryResult = cpu.getResult(cpuParams)
     Assert.assertEquals(result, cpuQueryResult)
@@ -86,13 +86,13 @@ class TestGetResult {
 
   @Test
   def testIncorrectGetResult() = {
-    val cpu = new Cpu
+    val cpu = new CpuInfluxTable
 
     val mockInfluxDB = Mockito.mock(classOf[InfluxDB])
     Mockito.when(mockInfluxDB.query(new Query(cpu.prepareQuery(errorParams), database))).thenReturn(errorQueryResult)
 
-    InfluxUtil.influxDB = mockInfluxDB
-    InfluxUtil.dbName = database
+    InfluxService.influxDB = mockInfluxDB
+    InfluxService.dbName = database
 
     val result = cpu.getResult(errorParams)
     Assert.assertEquals(result, errorQueryResult)

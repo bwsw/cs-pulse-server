@@ -30,7 +30,7 @@ object PulseConfig {
   private def getScales: List[ScaleConfig] = {
     val scope = config.getConfigList(aggregationsScope)
     scope.asScala
-      .map(declaration => ScaleConfig(declaration.getString(rangeKey), declaration.getStringList(aggregationKey).asScala.toList)).toList
+      .map(scale => ScaleConfig(scale.getString(rangeKey), scale.getStringList(aggregationKey).asScala.toList)).toList
   }
 
   /**

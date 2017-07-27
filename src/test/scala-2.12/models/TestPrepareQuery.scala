@@ -60,25 +60,25 @@ class TestPrepareQuery {
 
   @Test
   def testCpuPrepareQuery() = {
-    val cpu: Resource = new Cpu
+    val cpu: InfluxTable = new CpuInfluxTable
     Assert.assertEquals(cpu.prepareQuery(cpuTestParams), cpuTestQuery)
   }
 
   @Test
   def testRamPrepareQuery() = {
-    val ram: Resource = new Ram
+    val ram: InfluxTable = new RAMInfluxTable
     Assert.assertEquals(ram.prepareQuery(ramTestParams), ramTestQuery)
   }
 
   @Test
   def testDiskPrepareQuery() = {
-    val disk: Resource = new Disk
+    val disk: InfluxTable = new DiskInfluxTable
     Assert.assertEquals(disk.prepareQuery(diskTestParams), diskTestQuery)
   }
 
   @Test
   def testNetworkPrepareQuery() = {
-    val network: Resource = new Network
+    val network: InfluxTable = new NetworkInfluxTable
     Assert.assertEquals(network.prepareQuery(networkTestParams), networkTestQuery)
   }
 }

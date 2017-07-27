@@ -1,9 +1,9 @@
 package com.bwsw.cloudstack.pulse.models
 
-import com.bwsw.cloudstack.pulse.influx.InfluxUtil
+import com.bwsw.cloudstack.pulse.influx.InfluxService
 import org.influxdb.dto.QueryResult
 
-object Resource {
+object InfluxTable {
   def transformAggregationToSeconds(value: String) = {
     val Pattern = "([0-9]+)([mhd])".r
     value match {
@@ -18,7 +18,7 @@ object Resource {
 
 case class CounterField(name: String, params: Map[String, String]) {
   override def toString() = {
-    s"""NON_NEGATIVE_DERIVATIVE(MEAN("$name"), """ + params("aggregation") + ") / "  + Resource.transformAggregationToSeconds(params("aggregation")) + s""" AS "$name""""
+    s"""NON_NEGATIVE_DERIVATIVE(MEAN("$name"), """ + params("aggregation") + ") / "  + InfluxTable.transformAggregationToSeconds(params("aggregation")) + s""" AS "$name""""
   }
 }
 
@@ -38,10 +38,10 @@ case class QuotedField(fieldName: String) {
   override def toString(): String = s""""$fieldName""""
 }
 
-abstract class Resource {
+abstract class InfluxTable {
   def getResult(params: Map[String, String]): QueryResult = {
     val query: String = prepareQuery(params)
-    InfluxUtil.executeQuery(query)
+    InfluxService.query(query)
   }
 
   def timeSpec(params: Map[String, String]): String = {
@@ -62,17 +62,17 @@ abstract class Resource {
 }
 
 
-class Cpu extends Resource {
+class CpuInfluxTable extends InfluxTable {
   override def prepareQuery(params: Map[String, String]): String = {
     val whereParams = "WHERE " +
       QuotedField("vmUuid") + eq + QuotedValue(params("uuid"))
 
     select + """NON_NEGATIVE_DERIVATIVE(MEAN("cpuTime"), """ + params("aggregation") + ") / " +
-      """LAST("cpus") / """ + Resource.transformAggregationToSeconds(params("aggregation")) + """ * 100 AS "cpuTime"""" + from("cpuTime") + whereParams + timeSpec(params)
+      """LAST("cpus") / """ + InfluxTable.transformAggregationToSeconds(params("aggregation")) + """ * 100 AS "cpuTime"""" + from("cpuTime") + whereParams + timeSpec(params)
   }
 }
 
-class Ram extends Resource {
+class RAMInfluxTable extends InfluxTable {
   override def prepareQuery(params: Map[String, String]): String = {
     val whereParams =
       QuotedField("vmUuid") + eq + QuotedValue(params("uuid"))
@@ -85,7 +85,7 @@ class Ram extends Resource {
   }
 }
 
-class Disk extends Resource {
+class DiskInfluxTable extends InfluxTable {
   val counters = List("ioErrors", "readBytes", "writeBytes", "readIOPS", "writeIOPS")
   override def prepareQuery(params: Map[String, String]): String = {
 
@@ -102,7 +102,7 @@ class Disk extends Resource {
 }
 
 
-class Network extends Resource {
+class NetworkInfluxTable extends InfluxTable {
   val counters = List("readBytes", "writeBytes", "readErrors", "writeErrors", "readDrops", "writeDrops", "readPackets", "writePackets")
   override def prepareQuery(params: Map[String, String]): String = {
 

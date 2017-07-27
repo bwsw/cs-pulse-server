@@ -5,31 +5,33 @@ import scala.collection.JavaConverters._
 
 
 trait ViewFabric {
-  def prepareView(sourceData: QueryResult, params: Map[String, String]): (Boolean, View) = {
-    val error = checkQueryResult(sourceData)
-    if (error.isDefined) return (false, ErrorView(params, List(error.get)))
-    (true, prepareSpecView(sourceData, params))
+  def prepareView(queryResult: QueryResult, params: Map[String, String]): (Boolean, View) = {
+    val error = checkQueryResult(queryResult)
+    if (error.isDefined)
+      (false, ErrorView(params, List(error.get)))
+    else
+      (true, prepareMetricsView(queryResult, params))
   }
 
-  protected def prepareSpecView(sourceData: QueryResult, params: Map[String, String]): View
+  protected def prepareMetricsView(queryResult: QueryResult, params: Map[String, String]): View
 
-  protected def checkQueryResult(sourceData: QueryResult): Option[String] = {
-    if (sourceData.hasError) {
-      Some(sourceData.getError)
+  protected def checkQueryResult(queryResult: QueryResult): Option[String] = {
+    if (queryResult.hasError) {
+      Some(queryResult.getError)
     }
-    else if (sourceData.getResults.asScala.head.hasError) {
-      Some(sourceData.getResults.asScala.head.getError)
+    else if (queryResult.getResults.asScala.head.hasError) {
+      Some(queryResult.getResults.asScala.head.getError)
     }
     else None
   }
 
-  protected def getValue(lst: java.util.List[AnyRef], ind: Int): String = {
-    var t = lst.asScala.toList.lift(ind)
+  protected def getValue(list: java.util.List[AnyRef], index: Int): String = { //todo: fixit anyref
+    var t = list.asScala.toList.lift(index)
     if (t.contains(null)) t = Some("")
     t.get.toString
   }
 
-  protected def get_series(sourceData: QueryResult): QueryResult.Series = {
+  protected def getSeries(sourceData: QueryResult): QueryResult.Series = {
     val emptySeries = new QueryResult.Series
     emptySeries.setValues(List().asJava)
     if (sourceData.getResults.asScala.head.getSeries == null) emptySeries else sourceData.getResults.asScala.head.getSeries.asScala.head

@@ -12,17 +12,17 @@ import org.slf4j.LoggerFactory
   * Before use InfluxUtil to executing query call createConnection to create new database connection.
   */
 
-object InfluxUtil {
+object InfluxService {
   private var influxDB: InfluxDB = _
   private var dbName: String = _
   private val logger = LoggerFactory.getLogger(this.getClass)
 
-  def createConnection(serverUrl: String, username: String, password: String, database: String): Unit = {
+  def connect(serverUrl: String, username: String, password: String, database: String): Unit = {
     this.influxDB = InfluxDBFactory.connect(serverUrl, username, password)
     this.dbName = database
   }
 
-  def executeQuery(query: String): QueryResult = {
+  def query(query: String): QueryResult = {
     try {
       influxDB.query(new Query(query, dbName))
     } catch {

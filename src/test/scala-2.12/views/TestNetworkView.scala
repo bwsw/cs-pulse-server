@@ -80,7 +80,7 @@ class TestNetworkView {
   @Test
   def testPrepareView() = {
     val viewFabric = new NetworkViewFabric
-    val view: NetworkViewMeta = viewFabric.prepareSpecView(queryResult, params)
+    val view: NetworkViewMeta = viewFabric.prepareMetricsView(queryResult, params)
 
     Assert.assertEquals(view.measurement, measurement)
     Assert.assertEquals(view.uuid, params("uuid"))

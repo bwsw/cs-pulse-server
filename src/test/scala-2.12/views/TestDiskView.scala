@@ -71,7 +71,7 @@ class TestDiskView {
   @Test
   def testPrepareView() = {
     val viewFabric = new DiskViewFabric
-    val view: DiskViewMeta = viewFabric.prepareSpecView(queryResult, params)
+    val view: DiskViewMeta = viewFabric.prepareMetricsView(queryResult, params)
 
     Assert.assertEquals(view.measurement, measurement)
     Assert.assertEquals(view.uuid, params("uuid"))
