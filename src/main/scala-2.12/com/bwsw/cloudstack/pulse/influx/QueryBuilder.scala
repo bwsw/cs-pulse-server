@@ -78,7 +78,7 @@ class Select extends Expr {
 
   def build: String = {
     "SELECT " +
-    fieldExpressions.map(kv => kv._1 + " AS " + kv._2).mkString(", ") +
+    fieldExpressions.map(kv => kv._2 + " AS " + kv._1).mkString(", ") +
     s""" FROM "$tableExpression" """ +
     where.build
   }

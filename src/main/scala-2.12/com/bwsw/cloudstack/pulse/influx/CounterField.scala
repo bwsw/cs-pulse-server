@@ -19,6 +19,6 @@ class CounterField(name: String, aggregation: String, modifier: String) {
   val aggregationSeconds = transformAggregationToSeconds(aggregation)
 
   override def toString() = {
-    s"""NON_NEGATIVE_DERIVATIVE(MEAN("$name"), """ + aggregation + s")$modifier / "  + aggregationSeconds + s""" AS "$name""""
+    s"""NON_NEGATIVE_DERIVATIVE(MEAN("$name"), """ + aggregation + s")$modifier / "  + aggregationSeconds
   }
 }
