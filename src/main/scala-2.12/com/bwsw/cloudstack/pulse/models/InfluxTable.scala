@@ -1,42 +1,7 @@
 package com.bwsw.cloudstack.pulse.models
 
-import com.bwsw.cloudstack.pulse.influx.InfluxService
+import com.bwsw.cloudstack.pulse.influx.{CounterField, GaugeField, InfluxService, QueryBuilder}
 import org.influxdb.dto.QueryResult
-
-object InfluxTable {
-  def transformAggregationToSeconds(value: String) = {
-    val Pattern = "([0-9]+)([mhd])".r
-    value match {
-      case Pattern(number, scale) => scale match {
-        case "d" => number.toInt * 3600 * 24
-        case "h" => number.toInt * 3600
-        case "m" => number.toInt * 60
-      }
-    }
-  }
-}
-
-case class CounterField(name: String, params: Map[String, String]) {
-  override def toString() = {
-    s"""NON_NEGATIVE_DERIVATIVE(MEAN("$name"), """ + params("aggregation") + ") / "  + InfluxTable.transformAggregationToSeconds(params("aggregation")) + s""" AS "$name""""
-  }
-}
-
-case class GaugeField(name: String) {
-  override def toString(): String = {
-    s"""MEAN("$name") AS "$name""""
-  }
-}
-
-case class QuotedValue(value: String) {
-  override def toString(): String = {
-    "'" + value + "'"
-  }
-}
-
-case class QuotedField(fieldName: String) {
-  override def toString(): String = s""""$fieldName""""
-}
 
 abstract class InfluxTable {
   def getResult(params: Map[String, String]): QueryResult = {
@@ -44,76 +9,90 @@ abstract class InfluxTable {
     InfluxService.query(query)
   }
 
-  def timeSpec(params: Map[String, String]): String = {
-    " AND " +
-      "time > now() - " + params("range") + " - " + params("shift") + " AND " +
-      "time < now() - " + params("shift") + " GROUP BY time(" + params("aggregation") + ")"
-  }
-
-  def select: String = "SELECT "
-  def where: String = "WHERE "
-  def and: String = " AND "
-  def eq: String = " = "
-  def from(table: String): String = s""" FROM "$table" """
-
   def prepareQuery(params: Map[String, String]): String
-
-
 }
-
 
 class CpuInfluxTable extends InfluxTable {
   override def prepareQuery(params: Map[String, String]): String = {
-    val whereParams = "WHERE " +
-      QuotedField("vmUuid") + eq + QuotedValue(params("uuid"))
-
-    select + """NON_NEGATIVE_DERIVATIVE(MEAN("cpuTime"), """ + params("aggregation") + ") / " +
-      """LAST("cpus") / """ + InfluxTable.transformAggregationToSeconds(params("aggregation")) + """ * 100 AS "cpuTime"""" + from("cpuTime") + whereParams + timeSpec(params)
+    val aggregation = params("aggregation")
+    val shift = params("shift")
+    val range = params("range")
+    val q = QueryBuilder()
+      .select
+        .field("cpuTime", CounterField("cpuTime", aggregation, """ / LAST("cpus") * 100""").toString())
+      .from("cpuTime")
+      .where
+        .andEq("vmUuid", params("uuid"))
+        .timeSpan(aggregation, range, shift)
+      .groupByAggregation
+      .build
+    q
   }
 }
 
 class RAMInfluxTable extends InfluxTable {
   override def prepareQuery(params: Map[String, String]): String = {
-    val whereParams =
-      QuotedField("vmUuid") + eq + QuotedValue(params("uuid"))
-
-    select +
-      GaugeField("rss") +
-      from("rss") +
-      where +
-      whereParams + timeSpec(params)
+    val aggregation = params("aggregation")
+    val shift = params("shift")
+    val range = params("range")
+    val q = QueryBuilder()
+      .select
+        .field("rss", GaugeField("rss").toString())
+      .from("rss")
+      .where
+        .andEq("vmUuid", params("uuid"))
+        .timeSpan(aggregation, range, shift)
+      .groupByAggregation
+      .build
+    q
   }
 }
 
 class DiskInfluxTable extends InfluxTable {
-  val counters = List("ioErrors", "readBytes", "writeBytes", "readIOPS", "writeIOPS")
   override def prepareQuery(params: Map[String, String]): String = {
-
-    val whereParams =
-      QuotedField("vmUuid") + eq + QuotedValue(params("uuid")) + and +
-      QuotedField("image") + eq + QuotedValue(params("diskUuid"))
-
-    select +
-      counters.map(metric => CounterField(metric, params)).mkString(", ") +
-      from("disk") +
-      where +
-      whereParams + timeSpec(params)
+    val aggregation = params("aggregation")
+    val shift = params("shift")
+    val range = params("range")
+    val q = QueryBuilder()
+      .select
+        .field("ioErrors",   CounterField("ioErrors", aggregation).toString())
+        .field("readBytes",  CounterField("readBytes", aggregation).toString())
+        .field("writeBytes", CounterField("writeBytes", aggregation).toString())
+        .field("readIOPS",   CounterField("readIOPS", aggregation).toString())
+        .field("writeIOPS",  CounterField("writeIOPS", aggregation).toString())
+      .from("disk")
+      .where
+        .andEq("vmUuid", params("uuid"))
+        .andEq("image", params("diskUuid"))
+        .timeSpan(aggregation, range, shift)
+      .groupByAggregation
+      .build
+    q
   }
 }
 
-
 class NetworkInfluxTable extends InfluxTable {
-  val counters = List("readBytes", "writeBytes", "readErrors", "writeErrors", "readDrops", "writeDrops", "readPackets", "writePackets")
   override def prepareQuery(params: Map[String, String]): String = {
-
-    val whereParams =
-      QuotedField("vmUuid") + eq + QuotedValue(params("uuid")) + and +
-      QuotedField("mac") + eq + QuotedValue(params("mac"))
-
-    select +
-      counters.map(metric => CounterField(metric, params)).mkString(", ") +
-      from("networkInterface") +
-      where +
-      whereParams + timeSpec(params)
+    val aggregation = params("aggregation")
+    val shift = params("shift")
+    val range = params("range")
+    val q = QueryBuilder()
+      .select
+        .field("readBits",      CounterField("readBytes", aggregation, " * 8").toString())
+        .field("writeBits",     CounterField("writeBytes", aggregation, " * 8").toString())
+        .field("readErrors",    CounterField("readErrors", aggregation).toString())
+        .field("writeErrors",   CounterField("writeErrors", aggregation).toString())
+        .field("readDrops",     CounterField("readDrops", aggregation).toString())
+        .field("writeDrops",    CounterField("writeDrops", aggregation).toString())
+        .field("readPackets",   CounterField("readPackets", aggregation).toString())
+        .field("writePackets",  CounterField("writePackets", aggregation).toString())
+      .from("networkInterface")
+      .where
+        .andEq("vmUuid", params("uuid"))
+        .andEq("mac", params("mac"))
+        .timeSpan(aggregation, range, shift)
+      .groupByAggregation
+      .build
+    q
   }
 }

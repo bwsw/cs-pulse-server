@@ -18,15 +18,17 @@ class Expr {
   override def toString: String = super.toString
 }
 
-object FieldExpr {
-  def apply() = new FieldExpr
-}
-class FieldExpr extends Expr
+class WhereExpr(select: Select) extends Expr {
 
-object WhereExpr {
-  def apply() = new WhereExpr
-}
-class WhereExpr extends Expr {
+  private case class QuotedValue(value: String) {
+    override def toString(): String = {
+      "'" + value + "'"
+    }
+  }
+
+  private case class QuotedField(fieldName: String) {
+    override def toString(): String = s""""$fieldName""""
+  }
 
   private var _aggregation: String = _
   private var _range: String = _
@@ -45,7 +47,13 @@ class WhereExpr extends Expr {
   }
 
   def groupByAggregation = {
-    this
+    select
+  }
+
+  def build = {
+    andEqExpressions.map(kv => QuotedField(kv._1) + " = " + QuotedValue(kv._2)).mkString(" AND ") +
+      " AND time > now() - " + _range + " - " + _shift + " AND time < now() - " + _shift +
+      " GROUP BY time(" + _aggregation + ")"
   }
 
 }
@@ -63,9 +71,16 @@ class Select extends Expr {
     this
   }
 
-  private val whereExpression: WhereExpr = new WhereExpr
+  private val whereExpression: WhereExpr = new WhereExpr(this)
   def where: WhereExpr = {
     whereExpression
+  }
+
+  def build: String = {
+    "SELECT " +
+    fieldExpressions.map(kv => kv._1 + " AS " + kv._2).mkString(", ") +
+    s""" FROM "$tableExpression" """ +
+    where.build
   }
 }
 
@@ -73,10 +88,11 @@ object Test {
   var q = QueryBuilder()
     .select
       .field("cpuTime","")
-    .from("cputime")
-    .where
-        .timeSpan("1d","1h","0h")
-        .andEq("vmUuid","")
+      .from("cputime")
+      .where
+      .timeSpan("1d","1h","0h")
+      .andEq("vmUuid","")
       .groupByAggregation
+      .build
 
 }
