@@ -5,7 +5,7 @@
          version="3.0">
     <context-param>
         <param-name>org.scalatra.LifeCycle</param-name>
-        <param-value>com.bwsw.pulse.PulseBootstrap</param-value>
+        <param-value>com.bwsw.cloudstack.pulse.PulseBootstrap</param-value>
     </context-param>
     <listener>
         <listener-class>org.scalatra.servlet.ScalatraListener</listener-class>

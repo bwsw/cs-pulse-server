@@ -3,9 +3,9 @@ package controllers
 
 import java.util
 
-import com.bwsw.pulse.config.{PulseConfig, RangeConfig}
-import com.bwsw.pulse.controllers.PulseController
-import com.bwsw.pulse.influx.InfluxUtil
+import com.bwsw.cloudstack.pulse.config.{PulseConfig, ScaleConfig}
+import com.bwsw.cloudstack.pulse.controllers.PulseController
+import com.bwsw.cloudstack.pulse.influx.InfluxService
 import org.influxdb.InfluxDB
 import org.influxdb.dto.{Query, QueryResult}
 import org.scalatra.test.specs2._
@@ -49,18 +49,18 @@ class TestRamController extends MutableScalatraSpec {
   Mockito.when(mockInfluxDB.query(query)).thenReturn(queryResult)
 
 
-  InfluxUtil.influxDB = mockInfluxDB
-  InfluxUtil.dbName = database
+  InfluxService.influxDB = mockInfluxDB
+  InfluxService.dbName = database
 
   addServlet(classOf[PulseController], "/*")
 
-  PulseConfig.range_config = List(
-    RangeConfig("15m", List("1m", "5m")),
-    RangeConfig("1h", List("5m", "15m")),
-    RangeConfig("1d", List("2h", "4h"))
+  PulseConfig.scales = List(
+    ScaleConfig("15m", List("1m", "5m")),
+    ScaleConfig("1h", List("5m", "15m")),
+    ScaleConfig("1d", List("2h", "4h"))
   )
-  PulseConfig.range_list = List("15m", "1h", "1d")
-  PulseConfig.shift_config = List("m", "h", "d")
+  PulseConfig.ranges = List("15m", "1h", "1d")
+  PulseConfig.shifts = List("m", "h", "d")
 
 
 

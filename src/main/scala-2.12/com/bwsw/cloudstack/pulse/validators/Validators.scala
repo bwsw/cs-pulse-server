@@ -1,6 +1,6 @@
-package com.bwsw.pulse.validators
+package com.bwsw.cloudstack.pulse.validators
 
-import com.bwsw.pulse.config.PulseConfig
+import com.bwsw.cloudstack.pulse.config.PulseConfig
 
 
 class VmUuidValidator extends Validator {
@@ -17,7 +17,7 @@ class RangeValidator extends Validator {
   val message = s"Argument $fieldName not included into allowed interval. See configuration file."
 
   override def specValidate(params: Map[String, String]): Boolean = {
-    PulseConfig.range_list.contains(params(fieldName))
+    PulseConfig.ranges.contains(params(fieldName))
   }
 }
 
@@ -26,7 +26,7 @@ class AggregationValidator extends Validator {
   val message = s"Argument $fieldName not included into allowed interval. See configuration file."
 
   override def specValidate(params: Map[String, String]): Boolean = {
-    val range_config = PulseConfig.range_config.filter(rangeCFG => rangeCFG.range == params("range")).head
+    val range_config = PulseConfig.scales.filter(rangeCFG => rangeCFG.range == params("range")).head
     range_config.aggregation.contains(params(fieldName))
   }
 }
@@ -36,7 +36,7 @@ class ShiftValidator extends Validator {
   val message = s"Argument $fieldName not included into allowed interval. See configuration file."
 
   override def specValidate(params: Map[String, String]): Boolean = {
-    PulseConfig.shift_config.contains(params(fieldName).last.toString)
+    PulseConfig.shifts.contains(params(fieldName).last.toString)
   }
 }
 

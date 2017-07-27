@@ -2,8 +2,7 @@ FROM openjdk:8
 
 LABEL MAINTAINER Bitworks Software info@bitworks.software
 
-ENV INFLUX_HOST=localhost \
-    INFLUX_PORT=8086 \
+ENV INFLUX_URL=http://localhost:8086/ \
     INFLUX_USER=puls \
     INFLUX_PASSWORD=puls \
     INFLUX_DB=secret \
@@ -11,7 +10,7 @@ ENV INFLUX_HOST=localhost \
     NGINX_RATE_LIMIT=20r/s \
     DEBUG=false \
 
-    version=1.0.2-SNAPSHOT \
+    version=1.0.3.1-SNAPSHOT \
     scala_version=2.12 \
     jetty_version=9.4.6.v20170531
 
@@ -26,8 +25,10 @@ RUN apt-get update && \
     curl -o /opt/bin/jetty.jar http://central.maven.org/maven2/org/eclipse/jetty/jetty-runner/${jetty_version}/jetty-runner-${jetty_version}.jar && \
     curl -o /var/lib/jetty/webapps/cs-pulse-server.war https://oss.sonatype.org/content/repositories/snapshots/com/bwsw/cs-pulse-server_${scala_version}/${version}/cs-pulse-server_${scala_version}-${version}.war && \
     mv /opt/bin/docker/nginx.conf /etc/nginx/nginx.conf && \
-    rm /etc/nginx/sites-available/default
+    rm /etc/nginx/sites-available/default && \
+    rm -Rf /var/cache/apt/* && \
+    rm -Rf /var/lib/apt/lists/*
 
-EXPOSE 9090
+EXPOSE 8080
 
 CMD ["/bin/bash", "/opt/bin/docker/run.sh"]

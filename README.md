@@ -37,17 +37,12 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 - [x] &nbsp; Configurable nginx cache time (in seconds) for repeatable requests, default 10 seconds
 - [x] &nbsp; Set what kind of aggregation can there be for each range.
 
-#### Roadmap:
-
-- use Telegraf(TICK stack) as middle layer between server and database.
-
 
 ### Usage:
 ```
 # docker pull bwsw/cs-pulse-server
 # docker run --restart=always -d --name pulse-server \
-    -e INFLUX_HOST=localhost \
-    -e INFLUX_PORT=8086 \
+    -e INFLUX_URL=http://localhost:8086/ \
     -e INFLUX_USER=puls \
     -e INFLUX_PASSWORD=secret \
     -e INFLUX_DB=puls \
@@ -60,11 +55,8 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 ```
 pulse_config {
   influx {
-    host =  "localhost"
-    host = ${?INFLUX_HOST}
-
-    port = "8086"
-    port = ${?INFLUX_PORT}
+    url =  "http://localhost:8086"
+    url = ${?INFLUX_URL}
 
     username = "username"
     username = ${?INFLUX_USER}
@@ -75,7 +67,7 @@ pulse_config {
     database = "database"
     database = ${?INFLUX_DB}
   }
-  aggregations_allowed = [
+  scales = [
     {
       range = "15m"
       aggregation = ["1m", "5m"]
@@ -117,7 +109,7 @@ pulse_config {
       aggregation = ["4m", "6m"]
     }
   ]
-  shift = ["m", "h", "d"]
+  shifts = ["m", "h", "d"]
 }
 ```
 
@@ -156,7 +148,7 @@ https://github.com/bwsw/cs-pulse-server/wiki/Design
 ``` 
 http://hostname/cputime/550e8400-e29b-41d4-a716-446655440000/1d/1h/1w
 ```
-##### Cpu response:
+##### Cpu response (percents):
 ```
 {
     measurement: cputime,
@@ -183,7 +175,7 @@ http://hostname/cputime/550e8400-e29b-41d4-a716-446655440000/1d/1h/1w
 ```
 http://hostname/ram/550e8400-e29b-41d4-a716-446655440000/15m/1m/1d
 ```
-##### Ram response:
+##### Ram response (MB):
 ```
 {
     measurement: ram,
@@ -194,13 +186,13 @@ http://hostname/ram/550e8400-e29b-41d4-a716-446655440000/15m/1m/1d
     result: 
     [
         {
-            rss: 3.5
+            ram: 3500
         },
         {
-            rss: 3.3
+            ram: 3300
         },
         {
-            rss: 3.6
+            ram: 3600
         }
     ]
 }
@@ -254,8 +246,8 @@ http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/08:ED:B9:
     result: 
     [
         {
-            readBytes: 354920233,
-            writeBytes: 233636521,
+            readBits: 354920233,
+            writeBits: 233636521,
             readErrors: 0,
             writeErrors: 0,
             readDrops: 0,
@@ -264,8 +256,8 @@ http://hostname/network-interface/550e8400-e29b-41d4-a716-446655440000/08:ED:B9:
             writePackets: 797443
         },
         {
-            readBytes: 17842072,
-            writeBytes: 15747525,
+            readBits: 17842072,
+            writeBits: 15747525,
             readErrors: 0,
             writeErrors: 0,
             readDrops: 0,
