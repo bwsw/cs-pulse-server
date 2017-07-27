@@ -7,7 +7,7 @@ import org.scalatest.{FlatSpec, Matchers}
   * Created by Ivan Kudryavtsev on 27.07.17.
   */
 class CounterFieldTests extends FlatSpec with Matchers {
-  it should "transfer units to seconds properly" in {
+  it should "transform units to seconds properly" in {
     CounterField.transformAggregationToSeconds("1m") shouldBe 60
     CounterField.transformAggregationToSeconds("1h") shouldBe 3600
     CounterField.transformAggregationToSeconds("1d") shouldBe 3600 * 24
@@ -19,4 +19,20 @@ class CounterFieldTests extends FlatSpec with Matchers {
         .foreach(CounterField.transformAggregationToSeconds(_))
     }
   }
+
+  it should "create normal counter expressions based on NON_NEGATIVE_DERIVATIVE and MEAN" in {
+    val field1 = CounterField("field", "1h")
+    field1.toString() shouldBe """NON_NEGATIVE_DERIVATIVE(MEAN("field"), 1h) / 3600"""
+
+    val field2 = CounterField("field", "1h", " / 30")
+    field2.toString() shouldBe """NON_NEGATIVE_DERIVATIVE(MEAN("field"), 1h) / 30 / 3600"""
+
+    val field3 = CounterField("field", "1d")
+    field3.toString() shouldBe """NON_NEGATIVE_DERIVATIVE(MEAN("field"), 1d) / 86400"""
+
+    intercept[MatchError] {
+      val field = CounterField("field", "-1h")
+    }
+  }
+
 }
