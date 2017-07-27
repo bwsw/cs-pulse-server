@@ -1,9 +1,10 @@
-package com.bwsw.cloudstack.pulse.influx
+package com.bwsw.cloudstack.pulse.ut.influx
 
+import com.bwsw.cloudstack.pulse.influx.InfluxService
 import org.influxdb.InfluxDB
 import org.influxdb.dto._
 import org.mockito.Mockito
-import org.scalatest.{BeforeAndAfterAll, Matchers, FlatSpec}
+import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
 
 import scala.collection.JavaConverters._
 
