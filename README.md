@@ -148,7 +148,7 @@ https://github.com/bwsw/cs-pulse-server/wiki/Design
 ``` 
 http://hostname/cputime/550e8400-e29b-41d4-a716-446655440000/1d/1h/1w
 ```
-##### Cpu response:
+##### Cpu response (percents):
 ```
 {
     measurement: cputime,
@@ -175,7 +175,7 @@ http://hostname/cputime/550e8400-e29b-41d4-a716-446655440000/1d/1h/1w
 ```
 http://hostname/ram/550e8400-e29b-41d4-a716-446655440000/15m/1m/1d
 ```
-##### Ram response:
+##### Ram response (MB):
 ```
 {
     measurement: ram,
@@ -186,13 +186,13 @@ http://hostname/ram/550e8400-e29b-41d4-a716-446655440000/15m/1m/1d
     result: 
     [
         {
-            rss: 3.5
+            ram: 3500
         },
         {
-            rss: 3.3
+            ram: 3300
         },
         {
-            rss: 3.6
+            ram: 3600
         }
     ]
 }

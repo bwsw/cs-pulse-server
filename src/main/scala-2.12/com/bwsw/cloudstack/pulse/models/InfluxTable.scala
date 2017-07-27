@@ -45,7 +45,7 @@ class RAMInfluxTable extends InfluxTable {
     val range = params("range")
     val q = QueryBuilder()
       .select
-        .field("rss", GaugeField("rss"))
+        .field("ram", GaugeField("rss"))
       .from("rss")
       .where
         .andEq("vmUuid", params("uuid"))
