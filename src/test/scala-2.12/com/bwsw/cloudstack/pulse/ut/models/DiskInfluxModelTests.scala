@@ -11,6 +11,7 @@ class DiskInfluxModelTests extends FlatSpec with Matchers {
     val model = new DiskInfluxModel
     val expr = model.prepareQuery(Map("aggregation" -> "1h", "shift" -> "0h", "range" -> "1d",
       "uuid" -> "550e8400-e29b-41d4-a716-446655440000", "diskUuid" -> "550e8400-e29b-41d4-a716-446655441111"))
+
     val expectedValue = """SELECT NON_NEGATIVE_DERIVATIVE(MEAN("readIOPS"), 1h) / 3600 AS readIOPS, """ +
       """NON_NEGATIVE_DERIVATIVE(MEAN("ioErrors"), 1h) / 3600 AS ioErrors, """ +
       """NON_NEGATIVE_DERIVATIVE(MEAN("readBytes"), 1h) / 3600 AS readBytes, """ +
