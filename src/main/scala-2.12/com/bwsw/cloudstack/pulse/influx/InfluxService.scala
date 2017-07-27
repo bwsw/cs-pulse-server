@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory
 object InfluxService {
   private var influxDB: InfluxDB = _
   private var dbName: String = _
-  private val logger = LoggerFactory.getLogger(this.getClass)
 
   def connect(serverUrl: String, username: String, password: String, database: String): Unit = {
     this.influxDB = InfluxDBFactory.connect(serverUrl, username, password)

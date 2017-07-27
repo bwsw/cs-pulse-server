@@ -2,10 +2,17 @@ package com.bwsw.cloudstack.pulse.models
 
 import com.bwsw.cloudstack.pulse.influx.{CounterField, GaugeField, InfluxService, QueryBuilder}
 import org.influxdb.dto.QueryResult
+import org.slf4j.LoggerFactory
+
+object InfluxTable {
+  protected val logger = LoggerFactory.getLogger(this.getClass)
+
+}
 
 abstract class InfluxTable {
   def getResult(params: Map[String, String]): QueryResult = {
     val query: String = prepareQuery(params)
+    InfluxTable.logger.info(query)
     InfluxService.query(query)
   }
 
