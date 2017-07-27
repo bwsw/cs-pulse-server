@@ -14,8 +14,12 @@ abstract class MetricsViewFabric(table: InfluxTable) extends ViewFabric {
     getSeries(sourceData).getValues.asScala
       .map {
         value => (0 until cols.size)
-          .filter(cols(_) != "time")
-          .map(index => cols(index) -> Math.round(getValue(value, index).toFloat).toString).toMap
+          .map(index => cols(index) -> {
+              if(cols(index) != "time")
+                Math.round(getValue(value, index).toFloat).toString
+              else
+                getValue(value, index)
+          }).toMap
       }
   }
 }
