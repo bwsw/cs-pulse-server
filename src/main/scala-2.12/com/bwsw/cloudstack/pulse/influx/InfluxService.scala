@@ -13,17 +13,21 @@ import org.slf4j.LoggerFactory
   */
 
 object InfluxService {
-  private var influxDB: InfluxDB = _
-  private var dbName: String = _
+  private[pulse] var influxDB: InfluxDB = _
+  private[pulse] var dbName: String = _
   private val logger = LoggerFactory.getLogger(this.getClass)
 
   def connect(serverUrl: String, username: String, password: String, database: String): Unit = {
-    this.influxDB = InfluxDBFactory.connect(serverUrl, username, password)
-    this.dbName = database
+    influxDB = InfluxDBFactory.connect(serverUrl, username, password)
+    dbName = database
+    logger.info(s"Connection to InfluxDB: $database @ $serverUrl with $username/$password credentials established.")
   }
 
   def query(query: String): QueryResult = {
     try {
+      if(System.getenv("DEBUG") != null)
+        logger.info(query)
+
       influxDB.query(new Query(query, dbName))
     } catch {
       case re: RuntimeException =>
