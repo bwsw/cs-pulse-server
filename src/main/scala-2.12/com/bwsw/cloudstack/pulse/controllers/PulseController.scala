@@ -2,7 +2,8 @@ package com.bwsw.cloudstack.pulse.controllers
 
 import com.bwsw.cloudstack.pulse.config.PulseConfig
 import com.bwsw.cloudstack.pulse.models._
-import com.bwsw.cloudstack.pulse.validators._
+import com.bwsw.cloudstack.pulse.validators.complex.{DiskRequestValidator, NetworkInterfaceRequestValidator, CPURAMRequestValidator}
+import com.bwsw.cloudstack.pulse.validators.{PrimitiveValidator, Validator}
 import com.bwsw.cloudstack.pulse.views._
 import org.json4s.DefaultFormats
 import org.scalatra
@@ -18,45 +19,28 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
 
   private val logger =  LoggerFactory.getLogger(getClass)
 
-  def createResourceView(viewFabric: MetricsViewFabric, params: scalatra.Params): ActionResult = {
+  def createResourceView(viewFabric: MetricsViewBuilder, params: scalatra.Params): ActionResult = {
     val queryResult = viewFabric.getTable.getResult(params)
     val viewResult = viewFabric.prepareView(queryResult, params)
     if (viewResult._1) Ok(viewResult._2)
     else InternalServerError(viewResult._2)
   }
 
-  def handle(view: MetricsViewFabric, params: scalatra.Params, validator: Validator) = {
-    val (errors, isValid) = validator.validate(params)
+  def handle(view: MetricsViewBuilder, params: scalatra.Params, validator: Validator) = {
+    val result = validator.validate(params)
 
-    isValid match {
-      case true => createResourceView(view, params)
-      case false =>
-        logger.debug(errors.toString())
-        BadRequest(ErrorView(params, errors))
+    result match {
+      case Left(v) => createResourceView(view, params)
+      case Right(v) =>
+        logger.error(v)
+        BadRequest(ErrorView(params, List(v)))
     }
   }
 
-  private val vmValidator = new UuidValidator(new VmUuidValidator)
-  private val diskUuidValidator = new UuidValidator(new DiskValidator)
-  private val rangeValidator = new TimeFormatValidator(new RangeValidator)
-  private val aggregationValidator = new AggregationRangeValidator(new TimeFormatValidator(new AggregationValidator))
-  private val macValidator = new MacValidator
-  private val shiftValidator = new TimeFormatValidator(new ShiftValidator)
-
-  private val cpuValidator = new Validators(List(vmValidator, rangeValidator,
-    aggregationValidator, shiftValidator))
-  private val ramValidator = new Validators(List(vmValidator, rangeValidator,
-    aggregationValidator, shiftValidator))
-  private val diskValidator = new Validators(List(vmValidator, diskUuidValidator, rangeValidator,
-    aggregationValidator, shiftValidator))
-  private val networkValidator = new Validators(List(vmValidator, macValidator, rangeValidator,
-    aggregationValidator, shiftValidator))
-
-
-  private val cpuView = new CpuViewFabric(new CpuInfluxTable)
-  private val ramView = new RamViewFabric(new RAMInfluxTable)
-  private val diskView = new DiskViewFabric(new DiskInfluxTable)
-  private val networkView = new NetworkViewFabric(new NetworkInfluxTable)
+  private val cpuView = new CpuViewBuilder(new CPUInfluxModel)
+  private val ramView = new RamViewBuilder(new RAMInfluxModel)
+  private val diskView = new DiskViewBuilder(new DiskInfluxModel)
+  private val networkView = new NetworkViewBuilder(new NetworkInfluxModel)
 
   before() {
     contentType = formats("json")
@@ -65,31 +49,31 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   get("/cputime/:uuid/:range/:aggregation/:shift") {
     logger.debug(s"Cpu Time Request Parameters: $params")
 
-    handle(cpuView, params, cpuValidator)
+    handle(cpuView, params, new CPURAMRequestValidator)
   }
 
   get("/ram/:uuid/:range/:aggregation/:shift") {
     logger.debug(s"Ram Request Parameters: $params")
 
-    handle(ramView, params, ramValidator)
+    handle(ramView, params, new CPURAMRequestValidator)
   }
 
   get("/network-interface/:uuid/:mac/:range/:aggregation/:shift") {
     logger.debug(s"Network Request Parameters: $params")
 
-    handle(networkView, params, networkValidator)
+    handle(networkView, params, new NetworkInterfaceRequestValidator)
   }
 
   get("/disk/:uuid/:diskUuid/:range/:aggregation/:shift") {
     logger.debug(s"Disk Request Parameters: $params")
 
-    handle(diskView, params, diskValidator)
+    handle(diskView, params, new DiskRequestValidator)
   }
 
   get("/permitted-intervals") {
     logger.debug(s"Permitted Intervals Request Parameters")
 
-    PermittedIntervals(PulseConfig.shifts, PulseConfig.scales)
+    PermittedIntervals(PulseConfig().shifts, PulseConfig().scales)
   }
 
   notFound {
