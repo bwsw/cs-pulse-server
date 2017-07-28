@@ -6,7 +6,7 @@ import com.bwsw.cloudstack.pulse.validators.primitive.TimeFrameValidator
 /**
   * Created by Ivan Kudryavtsev on 28.07.17.
   */
-class TimeScaleValidator(range: String, aggregation: String, shift: String) extends Validator {
+class TimeScaleValidator extends Validator {
 
   val rangeKeyword = "range"
   val aggregationKeyword = "aggregation"
@@ -22,7 +22,7 @@ class TimeScaleValidator(range: String, aggregation: String, shift: String) exte
 
   private def onError(range: String, aggregation: String, shift: String) = {
     s"TimeScale parameters [Range '${range}', " +
-      s"Aggregation '${aggregation}', Shift: ${shift}] haven't passed the validation."
+      s"Aggregation '${aggregation}', Shift: '${shift}'] haven't passed the validation."
   }
 
   private def validateConfigMatch(range: String, aggregation: String, shift: String): Either[String, String] = {
@@ -33,7 +33,7 @@ class TimeScaleValidator(range: String, aggregation: String, shift: String) exte
         case false => Right(onError(range, aggregation, shift))
         case true => config.scales(range).aggregations.filter(a => aggregation == a).nonEmpty match {
           case false => Right(onError(range, aggregation, shift))
-          case true => Left("$range/$aggregation/$shift")
+          case true => Left(s"$range/$aggregation/$shift")
         }
       }
     }
@@ -41,14 +41,14 @@ class TimeScaleValidator(range: String, aggregation: String, shift: String) exte
 
   override def validate(params: Map[String, String]): Either[String, String] = {
     rangeValidator.validate(params) match {
-      case Left(error) => Left(error)
-      case Right(range) =>
+      case Right(error) => Right(error)
+      case Left(range) =>
         aggregationValidator.validate(params) match {
-          case Left(error) => Left(error)
-          case Right(aggregation) =>
+          case Right(error) => Right(error)
+          case Left(aggregation) =>
             shiftValidator.validate(params) match {
-              case Left(error) => Left(error)
-              case Right(shift) => validateConfigMatch(range, aggregation, shift)
+              case Right(error) => Right(error)
+              case Left(shift) => validateConfigMatch(range, aggregation, shift)
             }
         }
     }

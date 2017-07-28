@@ -4,7 +4,7 @@ import com.bwsw.cloudstack.pulse.validators.primitive.TimeFrameValidator
 import org.scalatest.{FlatSpec, Matchers}
 
 /**
-  * Created by ivan on 28.07.17.
+  * Created by Ivan Kudryavtsev on 28.07.17.
   */
 class TimeFrameValidatorTests extends FlatSpec with Matchers {
   it should "validate uuids properly" in {

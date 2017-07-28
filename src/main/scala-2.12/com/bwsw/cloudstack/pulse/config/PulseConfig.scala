@@ -14,7 +14,7 @@ case class InfluxConnectionConfig(url: String, username: String, password: Strin
 
 object PulseConfig {
 
-  var configOpt: Option[PulseConfig] = None
+  private[pulse] var configOpt: Option[PulseConfig] = None
   def apply() = {
     if (configOpt.isEmpty) {
       val configPath = {
