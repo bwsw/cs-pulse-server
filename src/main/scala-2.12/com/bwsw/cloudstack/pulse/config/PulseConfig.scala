@@ -8,7 +8,7 @@ import com.typesafe.config._
 
 import scala.collection.JavaConverters._
 
-case class ScaleConfig(range: String, aggregation: List[String])
+case class ScaleConfig(range: String, aggregations: List[String])
 
 case class InfluxConnectionConfig(url: String, username: String, password: String, database: String)
 

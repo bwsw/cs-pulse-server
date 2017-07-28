@@ -2,7 +2,7 @@ package com.bwsw.cloudstack.pulse.controllers
 
 import com.bwsw.cloudstack.pulse.config.PulseConfig
 import com.bwsw.cloudstack.pulse.models._
-import com.bwsw.cloudstack.pulse.validators.Validator
+import com.bwsw.cloudstack.pulse.validators.PrimitiveValidator
 import com.bwsw.cloudstack.pulse.validators.primitive.{UUIDValidator}
 import com.bwsw.cloudstack.pulse.views._
 import org.json4s.DefaultFormats
@@ -26,7 +26,7 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
     else InternalServerError(viewResult._2)
   }
 
-  def handle(view: MetricsViewBuilder, params: scalatra.Params, validator: Validator) = {
+  def handle(view: MetricsViewBuilder, params: scalatra.Params, validator: PrimitiveValidator) = {
     val result = validator.validate(params)
 
     result match {
@@ -49,25 +49,25 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   get("/cputime/:uuid/:range/:aggregation/:shift") {
     logger.debug(s"Cpu Time Request Parameters: $params")
 
-    handle(cpuView, params, new Validator("uuid"))
+    handle(cpuView, params, new PrimitiveValidator("uuid"))
   }
 
   get("/ram/:uuid/:range/:aggregation/:shift") {
     logger.debug(s"Ram Request Parameters: $params")
 
-    handle(ramView, params, new Validator("uuid"))
+    handle(ramView, params, new PrimitiveValidator("uuid"))
   }
 
   get("/network-interface/:uuid/:mac/:range/:aggregation/:shift") {
     logger.debug(s"Network Request Parameters: $params")
 
-    handle(networkView, params, new Validator("uuid"))
+    handle(networkView, params, new PrimitiveValidator("uuid"))
   }
 
   get("/disk/:uuid/:diskUuid/:range/:aggregation/:shift") {
     logger.debug(s"Disk Request Parameters: $params")
 
-    handle(diskView, params, new Validator("uuid"))
+    handle(diskView, params, new PrimitiveValidator("uuid"))
   }
 
   get("/permitted-intervals") {

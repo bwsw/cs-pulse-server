@@ -6,7 +6,7 @@ import scala.util.{Failure, Success, Try}
   * Created by Ivan Kudryavtsev on 28.07.17.
   */
 
-class PatternValidator(field: String) extends Validator(field) {
+class PatternValidator(field: String) extends PrimitiveValidator(field) {
   protected def getPattern = "".r
 
   override def validate(params: Map[String, String]): Either[String, String] = {
