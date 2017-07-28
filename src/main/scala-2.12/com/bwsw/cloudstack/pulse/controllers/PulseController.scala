@@ -2,7 +2,8 @@ package com.bwsw.cloudstack.pulse.controllers
 
 import com.bwsw.cloudstack.pulse.config.PulseConfig
 import com.bwsw.cloudstack.pulse.models._
-import com.bwsw.cloudstack.pulse.validators._
+import com.bwsw.cloudstack.pulse.validators.Validator
+import com.bwsw.cloudstack.pulse.validators.primitive.{UUIDValidator}
 import com.bwsw.cloudstack.pulse.views._
 import org.json4s.DefaultFormats
 import org.scalatra
@@ -26,32 +27,15 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   }
 
   def handle(view: MetricsViewBuilder, params: scalatra.Params, validator: Validator) = {
-    val (errors, isValid) = validator.validate(params)
+    val result = validator.validate(params)
 
-    isValid match {
-      case true => createResourceView(view, params)
-      case false =>
-        logger.debug(errors.toString())
-        BadRequest(ErrorView(params, errors))
+    result match {
+      case Left(v) => createResourceView(view, params)
+      case Right(v) =>
+        logger.error(v)
+        BadRequest(ErrorView(params, List(v)))
     }
   }
-
-  private val vmValidator = new UuidValidator(new VmUuidValidator)
-  private val diskUuidValidator = new UuidValidator(new DiskValidator)
-  private val rangeValidator = new TimeFormatValidator(new RangeValidator)
-  private val aggregationValidator = new AggregationRangeValidator(new TimeFormatValidator(new AggregationValidator))
-  private val macValidator = new MacValidator
-  private val shiftValidator = new TimeFormatValidator(new ShiftValidator)
-
-  private val cpuValidator = new Validators(List(vmValidator, rangeValidator,
-    aggregationValidator, shiftValidator))
-  private val ramValidator = new Validators(List(vmValidator, rangeValidator,
-    aggregationValidator, shiftValidator))
-  private val diskValidator = new Validators(List(vmValidator, diskUuidValidator, rangeValidator,
-    aggregationValidator, shiftValidator))
-  private val networkValidator = new Validators(List(vmValidator, macValidator, rangeValidator,
-    aggregationValidator, shiftValidator))
-
 
   private val cpuView = new CpuViewBuilder(new CPUInfluxModel)
   private val ramView = new RamViewBuilder(new RAMInfluxModel)
@@ -65,25 +49,25 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   get("/cputime/:uuid/:range/:aggregation/:shift") {
     logger.debug(s"Cpu Time Request Parameters: $params")
 
-    handle(cpuView, params, cpuValidator)
+    handle(cpuView, params, new Validator("uuid"))
   }
 
   get("/ram/:uuid/:range/:aggregation/:shift") {
     logger.debug(s"Ram Request Parameters: $params")
 
-    handle(ramView, params, ramValidator)
+    handle(ramView, params, new Validator("uuid"))
   }
 
   get("/network-interface/:uuid/:mac/:range/:aggregation/:shift") {
     logger.debug(s"Network Request Parameters: $params")
 
-    handle(networkView, params, networkValidator)
+    handle(networkView, params, new Validator("uuid"))
   }
 
   get("/disk/:uuid/:diskUuid/:range/:aggregation/:shift") {
     logger.debug(s"Disk Request Parameters: $params")
 
-    handle(diskView, params, diskValidator)
+    handle(diskView, params, new Validator("uuid"))
   }
 
   get("/permitted-intervals") {
