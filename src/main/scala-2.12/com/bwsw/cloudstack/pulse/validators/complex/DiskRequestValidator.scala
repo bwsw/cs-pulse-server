@@ -12,7 +12,7 @@ class DiskRequestValidator extends Validator {
 
   val timeScaleValidator = new TimeScaleValidator()
   val uuidValidator = new UUIDValidator("uuid")
-  val vmUuidValidator = new UUIDValidator("vmUuid")
+  val vmUuidValidator = new UUIDValidator("diskUuid")
 
   override def validate(params: Map[String, String]): Either[String, String] = {
     uuidValidator.validate(params) match {
