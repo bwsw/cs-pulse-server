@@ -23,7 +23,7 @@ class PatternValidator(field: String) extends PrimitiveValidator(field) {
     if(params.contains(fieldName))
       s"Field '$fieldName' haven't passed validation routine. Expected: '${getPattern.toString()}', Got: '${params(fieldName)}'."
     else
-      s"Field '$fieldName' haven't found in parameters."
+      s"Field '$fieldName' haven't been found in parameters."
   }
 
 }

@@ -1,9 +1,9 @@
-package com.bwsw.cloudstack.pulse.ut.validators.primitive
+package com.bwsw.cloudstack.pulse.ut.validators
 
 import com.bwsw.cloudstack.pulse.config.PulseConfig
 import com.bwsw.cloudstack.pulse.ut.common.ConfigurationTests
 import com.bwsw.cloudstack.pulse.validators.TimeScaleValidator
-import org.scalatest.{Matchers, FlatSpec, BeforeAndAfterAll}
+import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
 
 /**
   * Created by Ivan Kudryavtsev on 28.07.17.
