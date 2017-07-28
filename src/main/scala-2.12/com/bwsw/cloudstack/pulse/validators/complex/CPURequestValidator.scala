@@ -1,5 +1,6 @@
-package com.bwsw.cloudstack.pulse.validators
+package com.bwsw.cloudstack.pulse.validators.complex
 
+import com.bwsw.cloudstack.pulse.validators.Validator
 import com.bwsw.cloudstack.pulse.validators.primitive.UUIDValidator
 
 /**

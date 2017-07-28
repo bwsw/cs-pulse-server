@@ -1,8 +1,8 @@
-package com.bwsw.cloudstack.pulse.ut.validators
+package com.bwsw.cloudstack.pulse.ut.validators.complex
 
 import com.bwsw.cloudstack.pulse.config.PulseConfig
 import com.bwsw.cloudstack.pulse.ut.common.ConfigurationTests
-import com.bwsw.cloudstack.pulse.validators.CPURequestValidator
+import com.bwsw.cloudstack.pulse.validators.complex.CPURequestValidator
 import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
 
 /**
