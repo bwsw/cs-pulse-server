@@ -12,6 +12,7 @@ class TimeFrameValidatorTests extends FlatSpec with Matchers {
     v.validate(Map("test" -> "1h")) shouldBe Left("1h")
     v.validate(Map("test" -> "1m")) shouldBe Left("1m")
     v.validate(Map("test" -> "1d")) shouldBe Left("1d")
+    v.validate(Map("test" -> "1w")) shouldBe Left("1w")
   }
 
   it should "validate wrong data properly" in {

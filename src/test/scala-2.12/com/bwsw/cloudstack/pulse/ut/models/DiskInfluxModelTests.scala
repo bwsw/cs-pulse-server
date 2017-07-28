@@ -18,7 +18,7 @@ class DiskInfluxModelTests extends FlatSpec with Matchers {
       """NON_NEGATIVE_DERIVATIVE(MEAN("writeBytes"), 1h) / 3600 AS writeBytes, """ +
       """NON_NEGATIVE_DERIVATIVE(MEAN("writeIOPS"), 1h) / 3600 AS writeIOPS """ +
       """FROM "disk" WHERE "vmUuid" = '550e8400-e29b-41d4-a716-446655440000' AND """ +
-      """"image" = '550e8400-e29b-41d4-a716-446655441111' AND time > now() - 1d - 0h AND time < now() - 0h GROUP BY time(1h)"""
+      """"image" = '550e8400-e29b-41d4-a716-446655441111' AND time > now() - 1d - 0h AND time < now() - 0h GROUP BY time(1h) fill(0)"""
 
     expr shouldBe expectedValue
   }

@@ -2,7 +2,7 @@ package com.bwsw.cloudstack.pulse.controllers
 
 import com.bwsw.cloudstack.pulse.config.PulseConfig
 import com.bwsw.cloudstack.pulse.models._
-import com.bwsw.cloudstack.pulse.validators.complex.CPURAMRequestValidator
+import com.bwsw.cloudstack.pulse.validators.complex.{DiskRequestValidator, NetworkInterfaceRequestValidator, CPURAMRequestValidator}
 import com.bwsw.cloudstack.pulse.validators.{PrimitiveValidator, Validator}
 import com.bwsw.cloudstack.pulse.views._
 import org.json4s.DefaultFormats
@@ -61,13 +61,13 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   get("/network-interface/:uuid/:mac/:range/:aggregation/:shift") {
     logger.debug(s"Network Request Parameters: $params")
 
-    handle(networkView, params, new PrimitiveValidator("uuid"))
+    handle(networkView, params, new NetworkInterfaceRequestValidator)
   }
 
   get("/disk/:uuid/:diskUuid/:range/:aggregation/:shift") {
     logger.debug(s"Disk Request Parameters: $params")
 
-    handle(diskView, params, new PrimitiveValidator("uuid"))
+    handle(diskView, params, new DiskRequestValidator)
   }
 
   get("/permitted-intervals") {

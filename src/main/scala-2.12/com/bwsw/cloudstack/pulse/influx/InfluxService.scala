@@ -25,6 +25,9 @@ object InfluxService {
 
   def query(query: String): QueryResult = {
     try {
+      if(System.getenv("DEBUG") != null)
+        logger.info(query)
+
       influxDB.query(new Query(query, dbName))
     } catch {
       case re: RuntimeException =>

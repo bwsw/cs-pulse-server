@@ -28,7 +28,7 @@ class TimeScaleValidatorTests extends FlatSpec with Matchers with BeforeAndAfter
       Right("TimeScale parameters [Range '30m', Aggregation '5h', Shift: '0d'] haven't passed the validation.")
 
     validator.validate(Map("range" -> "30m", "aggregation" -> "5m", "shift" -> "-1d")) shouldBe
-      Right("Field 'shift' haven't passed validation routine. Expected: '^([0-9]+[mhd])$', Got: '-1d'.")
+      Right("Field 'shift' haven't passed validation routine. Expected: '^([0-9]+[mhdw])$', Got: '-1d'.")
 
   }
 
