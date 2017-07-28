@@ -17,7 +17,7 @@ class RangeValidator extends Validator {
   val message = s"Argument $fieldName not included into allowed interval. See configuration file."
 
   override def specValidate(params: Map[String, String]): Boolean = {
-    PulseConfig.ranges.contains(params(fieldName))
+    PulseConfig().ranges.contains(params(fieldName))
   }
 }
 
@@ -26,8 +26,8 @@ class AggregationValidator extends Validator {
   val message = s"Argument $fieldName not included into allowed interval. See configuration file."
 
   override def specValidate(params: Map[String, String]): Boolean = {
-    val range_config = PulseConfig.scales.filter(rangeCFG => rangeCFG.range == params("range")).head
-    range_config.aggregation.contains(params(fieldName))
+    val range = params("range")
+    PulseConfig().scales.contains(range)
   }
 }
 
@@ -36,7 +36,7 @@ class ShiftValidator extends Validator {
   val message = s"Argument $fieldName not included into allowed interval. See configuration file."
 
   override def specValidate(params: Map[String, String]): Boolean = {
-    PulseConfig.shifts.contains(params(fieldName).last.toString)
+    PulseConfig().shifts.contains(params(fieldName).last.toString)
   }
 }
 

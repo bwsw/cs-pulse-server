@@ -2,7 +2,7 @@ package views
 
 import java.util
 
-import com.bwsw.cloudstack.pulse.views.{RamViewFabric, RamViewMeta}
+import com.bwsw.cloudstack.pulse.views.RamViewBuilder
 import org.influxdb.dto.QueryResult
 
 import scala.collection.JavaConverters._
