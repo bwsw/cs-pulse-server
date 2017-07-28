@@ -29,6 +29,6 @@ RUN apt-get update && \
     rm -Rf /var/cache/apt/* && \
     rm -Rf /var/lib/apt/lists/*
 
-EXPOSE 8080
+EXPOSE 9090
 
 CMD ["/bin/bash", "/opt/bin/docker/run.sh"]
