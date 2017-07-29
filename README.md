@@ -1,4 +1,5 @@
-# CS-Umbrella / Pulse Plugin Server Code
+# CS-Umbrella / Pulse Plugin Server Code 
+
 RESTful server for bwsw/cs-pulse-sensor datafeed processing
 
 ### Server specification
