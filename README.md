@@ -1,4 +1,4 @@
-![](https://travis-ci.org/bwsw/cs-pulse-server.svg?branch=master)
+![Travis-CI build status for master branch](https://travis-ci.org/bwsw/cs-pulse-server.svg?branch=master)
 
 # CS-Umbrella / Pulse Plugin Server Code 
 
