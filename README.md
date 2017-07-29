@@ -1,3 +1,5 @@
+![](https://travis-ci.org/bwsw/cs-pulse-server.svg?branch=master)
+
 # CS-Umbrella / Pulse Plugin Server Code 
 
 RESTful server for bwsw/cs-pulse-sensor datafeed processing
