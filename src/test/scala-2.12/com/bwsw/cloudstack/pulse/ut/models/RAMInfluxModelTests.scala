@@ -11,6 +11,6 @@ class RAMInfluxModelTests extends FlatSpec with Matchers {
     val model = new RAMInfluxModel
     val expr = model.prepareQuery(Map("aggregation" -> "1h", "shift" -> "0h", "range" -> "1d", "uuid" -> "550e8400-e29b-41d4-a716-446655440000"))
     expr shouldBe """SELECT MEAN("rss") AS ram FROM "rss" """ +
-      """WHERE "vmUuid" = '550e8400-e29b-41d4-a716-446655440000' AND time > now() - 1d - 0h AND time < now() - 0h GROUP BY time(1h) fill(0)"""
+      """WHERE "vmUuid" = '550e8400-e29b-41d4-a716-446655440000' AND time > now() - 1d - 2h - 0h AND time < now() - 0h GROUP BY time(1h) fill(0) offset 2"""
   }
 }

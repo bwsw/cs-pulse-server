@@ -51,10 +51,11 @@ class WhereExpr(select: Select) extends Expr {
   }
 
   def build = {
+    val add_2_intv = (x: String) => "2" + x(x.length() - 1)
     "WHERE " +
       andEqExpressions.map(kv => QuotedField(kv._1) + " = " + QuotedValue(kv._2)).mkString(" AND ") +
-      " AND time > now() - " + _range + " - " + _shift + " AND time < now() - " + _shift +
-      " GROUP BY time(" + _aggregation + ") fill(0)"
+      " AND time > now() - " + _range + " - " + add_2_intv(_aggregation) + " - " + _shift + " AND time < now() - " + _shift +
+      " GROUP BY time(" + _aggregation + ") fill(0) offset 2"
   }
 
 }

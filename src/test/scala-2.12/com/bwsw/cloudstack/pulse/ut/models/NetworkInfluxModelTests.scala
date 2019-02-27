@@ -20,7 +20,7 @@ class NetworkInfluxModelTests extends FlatSpec with Matchers {
         """NON_NEGATIVE_DERIVATIVE(MEAN("readPackets"), 1h) / 3600 AS readPackets, """ +
         """NON_NEGATIVE_DERIVATIVE(MEAN("readBytes"), 1h) * 8 / 3600 AS readBits """ +
         """FROM "networkInterface" WHERE "mac" = '00:11:22:33:44:55' AND "vmUuid" = '550e8400-e29b-41d4-a716-446655440000' """ +
-        """AND time > now() - 1d - 0h AND time < now() - 0h GROUP BY time(1h) fill(0)"""
+        """AND time > now() - 1d - 2h - 0h AND time < now() - 0h GROUP BY time(1h) fill(0) offset 2"""
 
       expr shouldBe expectedValue
     }

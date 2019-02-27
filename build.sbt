@@ -1,8 +1,8 @@
 name := "cs-pulse-server"
 
-version := "1.0.3.1-SNAPSHOT"
+version := "1.0.3.2-SNAPSHOT"
 
-scalaVersion := "2.12.2"
+scalaVersion := "2.12.8"
 
 pomExtra :=
   <scm>

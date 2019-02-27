@@ -11,6 +11,6 @@ class CPUInfluxModelTests extends FlatSpec with Matchers {
     val model = new CPUInfluxModel
     val expr = model.prepareQuery(Map("aggregation" -> "1h", "shift" -> "0h", "range" -> "1d", "uuid" -> "550e8400-e29b-41d4-a716-446655440000"))
     expr shouldBe """SELECT MEAN("cpus") AS cpuCount, NON_NEGATIVE_DERIVATIVE(MEAN("cpuTime"), 1h) / LAST("cpus") * 100 / 3600 AS cpuTime FROM """ +
-      """"cpuTime" WHERE "vmUuid" = '550e8400-e29b-41d4-a716-446655440000' AND time > now() - 1d - 0h AND time < now() - 0h GROUP BY time(1h) fill(0)"""
+      """"cpuTime" WHERE "vmUuid" = '550e8400-e29b-41d4-a716-446655440000' AND time > now() - 1d - 2h - 0h AND time < now() - 0h GROUP BY time(1h) fill(0) offset 2"""
   }
 }
