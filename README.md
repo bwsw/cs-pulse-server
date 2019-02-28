@@ -10,7 +10,7 @@ RESTful server for bwsw/cs-pulse-sensor datafeed processing
 
 1. CPU time, query param /cputime/uuid/range/aggregation/shift
 * uuid - host uuid
-* range - Data output period - 15m, 30m, 1h, 2h, 4h, 12h, 1d, 1w, 1month
+* range - Data output period - 15m, 30m, 1h, 2h, 4h, 12h, 1d, 1w, 1month and others if configured in the configuration file.
 * shift - 0+ which means N-fold shift in current  range
 * aggregation - 1m, 5m, 15m, 1h (aggregation must be less then range), example: range=15m, aggregation=5m, in result we have 3 values for needed data.
  Can have only one parameter which is gotten from a sensor
@@ -183,7 +183,7 @@ http://hostname/cputime/550e8400-e29b-41d4-a716-446655440000/1d/1h/1w
 ```
 http://hostname/ram/550e8400-e29b-41d4-a716-446655440000/15m/1m/1d
 ```
-##### Ram response (MB):
+##### Ram response (KB):
 ```
 {
     measurement: ram,
