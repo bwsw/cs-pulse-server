@@ -73,7 +73,7 @@ class PulseController extends ScalatraServlet with JacksonJsonSupport {
   get("/permitted-intervals") {
     logger.debug(s"Permitted Intervals Request Parameters")
 
-    PermittedIntervals(PulseConfig().shifts, PulseConfig().scales)
+    PermittedIntervals(PulseConfig().shifts, PulseConfig().scalesList)
   }
 
   notFound {

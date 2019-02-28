@@ -55,12 +55,21 @@ class PulseConfig(configPath: String) {
       .map(scale => scale.getString(rangeKey) -> ScaleConfig(scale.getString(rangeKey), scale.getStringList(aggregationKey).asScala.toList)).toMap
   }
 
+  private def getScalesList: List[(String, ScaleConfig)] = {
+    val scope = config.getConfigList(aggregationsScope)
+    scope.asScala
+      .map(scale => (scale.getString(rangeKey),
+        ScaleConfig(scale.getString(rangeKey), scale.getStringList(aggregationKey).asScala.toList))).toList
+  }
+
   /**
     * Available configs
     */
   def scales = getScales
 
-  def ranges = scales.map(cfg => cfg._1).toList.sorted
+  def scalesList = getScalesList
+
+  def ranges = scalesList.map(cfg => cfg._1)
 
   def shifts = config.getStringList(shiftKey).asScala.toList
 
